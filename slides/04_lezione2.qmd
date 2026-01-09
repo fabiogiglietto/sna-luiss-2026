@@ -362,6 +362,21 @@ Il **peso** indica quanti hashtag in comune hanno due utenti.
 | `bipartite.mapping()` | Verifica/crea bipartita |
 | `bipartite.projection()` | Calcola proiezioni |
 
+## Esercizi Consigliati
+
+Pratica con gli esercizi del libro [The Atlas for the Aspiring Network Scientist](https://networkatlas.eu):
+
+### Capitolo 6 — Reti Bipartite
+- [Esercizio 6.1](https://www.networkatlas.eu/exercises/6_1.htm) — Proprietà base dei grafi
+- [Esercizio 6.2](https://www.networkatlas.eu/exercises/6_2.htm) — Costruire grafi da relazioni
+
+### Capitolo 16 — Modelli di Rete
+- [Esercizio 16.1](https://www.networkatlas.eu/exercises/16_1.htm) — Confronto distribuzioni di grado
+
+### Capitolo 17-18 — Community Detection
+- [Esercizio 17.1](https://www.networkatlas.eu/exercises/17_1.htm) — Partizioni di rete
+- [Esercizio 18.1](https://www.networkatlas.eu/exercises/18_1.htm) — Algoritmi di clustering
+
 ## Prossimi Passi {.center}
 
 ### Approfondimenti

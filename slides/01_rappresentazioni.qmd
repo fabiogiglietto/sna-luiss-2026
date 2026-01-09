@@ -287,6 +287,23 @@ ggraph(g, layout = "fr") +
 | Distanze | `distances(g)` |
 | Componenti | `components(g)` |
 
+## Esercizi Consigliati
+
+Pratica con gli esercizi del libro [The Atlas for the Aspiring Network Scientist](https://networkatlas.eu):
+
+### Capitolo 6 — Introduzione ai Grafi
+- [Esercizio 6.1](https://www.networkatlas.eu/exercises/6_1.htm) — Calcolare |V| e |E|
+- [Esercizio 6.2](https://www.networkatlas.eu/exercises/6_2.htm) — Disegnare grafi diretti
+
+### Capitolo 7 — Degree
+- [Esercizio 7.1](https://www.networkatlas.eu/exercises/7_1.htm) — Reti bipartite e degree
+
+### Capitolo 8 — Cammini e Distanze
+- [Esercizio 8.1](https://www.networkatlas.eu/exercises/8_1.htm) — Calcolare distanze
+
+### Capitolo 9 — Componenti
+- [Esercizio 9.1](https://www.networkatlas.eu/exercises/9_1.htm) — Identificare componenti connesse
+
 ## Domande? {.center}
 
 Prossimo blocco: **Centralità**
