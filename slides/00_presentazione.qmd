@@ -77,7 +77,8 @@ Non importa solo **chi sei**, ma **chi conosci** e **come sei connesso**.
 
 - Monitoraggio reti sociali
 - API per la raccolta dati
-- Visualizzazione grafica delle reti informative
+- Visualizzazione reti informative
+- Coordinated sharing detection
 :::
 ::::
 

@@ -38,6 +38,7 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 - Monitoraggio reti sociali
 - API per la raccolta dati
 - Visualizzazione grafica delle reti informative
+- Coordinated sharing detection con [coortweet](https://github.com/nicolarighetti/coortweet)
 
 ---
 

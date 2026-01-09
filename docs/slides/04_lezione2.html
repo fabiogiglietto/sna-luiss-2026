@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.0.37">
 
   <meta name="author" content="Prof.&nbsp;Fabio Giglietto">
-  <title>Twitter, Community Detection, Reti Bipartite</title>
+  <title>Reti Sociali, Community Detection e Coordinated Sharing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -386,7 +386,7 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Twitter, Community Detection, Reti Bipartite</h1>
+  <h1 class="title">Reti Sociali, Community Detection e Coordinated Sharing</h1>
   <p class="subtitle">Lezione 2 — Online</p>
   <p class="author">Prof.&nbsp;Fabio Giglietto</p>
 </section>
@@ -394,7 +394,7 @@
 <section id="agenda-lezione-2" class="slide level2">
 <h2>Agenda Lezione 2</h2>
 <ol type="1">
-<li><strong>Reti da Twitter Data</strong>
+<li><strong>Reti da Social Media Data</strong>
 <ul>
 <li>Rete retweet</li>
 <li>Rete utente-hashtag</li>
@@ -403,12 +403,16 @@
 <ul>
 <li>Edge Betweenness</li>
 <li>Louvain</li>
-<li>Confronto partizioni (NMI)</li>
 </ul></li>
 <li><strong>Reti Bipartite</strong>
 <ul>
 <li>Due tipi di nodi</li>
 <li>Proiezioni</li>
+</ul></li>
+<li><strong>Coordinated Sharing Detection</strong>
+<ul>
+<li>Comportamenti coordinati</li>
+<li><a href="https://github.com/nicolarighetti/coortweet">coortweet</a></li>
 </ul></li>
 </ol>
 </section>
@@ -767,6 +771,86 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 <li>Cluster = <strong>temi correlati</strong></li>
 </ul>
 </section>
+<section id="coordinated-sharing-detection" class="slide level2">
+<h2>Coordinated Sharing Detection</h2>
+<p>Il <strong>coordinated sharing</strong> è un comportamento in cui più account condividono gli stessi contenuti in modo sincronizzato.</p>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Perché è importante per OSINT</strong></p>
+</div>
+<div class="callout-content">
+<p>Identificare comportamenti coordinati può rivelare:</p>
+<ul>
+<li>Campagne di disinformazione</li>
+<li>Astroturfing e manipolazione</li>
+<li>Reti di bot o account inautentici</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="coortweet-il-pacchetto-r" class="slide level2">
+<h2>coortweet: Il Pacchetto R</h2>
+<p><a href="https://github.com/nicolarighetti/coortweet">coortweet</a> rileva comportamenti coordinati su Twitter/X.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Installazione</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"nicolarighetti/coortweet"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">library</span>(coortweet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3 id="principio-di-funzionamento">Principio di funzionamento</h3>
+<ol type="1">
+<li>Identifica URL/contenuti condivisi da più utenti</li>
+<li>Calcola finestre temporali di condivisione</li>
+<li>Crea rete di co-sharing tra utenti</li>
+<li>Rileva cluster di account coordinati</li>
+</ol>
+</section>
+<section id="coortweet-esempio" class="slide level2 smaller">
+<h2>coortweet: Esempio</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(coortweet)</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># Carica dati Twitter (formato accademico API v2)</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>result <span class="ot">&lt;-</span> <span class="fu">detect_coordinated_sharing</span>(</span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="at">data =</span> tweets_df,</span>
+<span id="cb18-6"><a href="#cb18-6"></a>  <span class="at">time_window =</span> <span class="dv">60</span>,        <span class="co"># secondi</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a>  <span class="at">min_repetition =</span> <span class="dv">2</span>,      <span class="co"># condivisioni minime</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>  <span class="at">percentile_edge =</span> <span class="fl">0.95</span>   <span class="co"># soglia per archi</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a>)</span>
+<span id="cb18-10"><a href="#cb18-10"></a></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="co"># Risultati</span></span>
+<span id="cb18-12"><a href="#cb18-12"></a>result<span class="sc">$</span>network        <span class="co"># rete igraph</span></span>
+<span id="cb18-13"><a href="#cb18-13"></a>result<span class="sc">$</span>coordinated    <span class="co"># utenti coordinati</span></span>
+<span id="cb18-14"><a href="#cb18-14"></a>result<span class="sc">$</span>highly_coord   <span class="co"># cluster principali</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="coortweet-visualizzazione" class="slide level2">
+<h2>coortweet: Visualizzazione</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="co"># Visualizza la rete di coordinamento</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>g <span class="ot">&lt;-</span> result<span class="sc">$</span>network</span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">ggraph</span>(g, <span class="at">layout =</span> <span class="st">"fr"</span>) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>  <span class="fu">geom_edge_link</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="fu">as.factor</span>(cluster)), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>  <span class="fu">theme_graph</span>() <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Cluster"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Interpretazione</strong></p>
+</div>
+<div class="callout-content">
+<p>Account nello stesso cluster hanno condiviso gli stessi contenuti entro la finestra temporale definita.</p>
+</div>
+</div>
+</div>
+</section>
 <section id="esercizio-lezione-2" class="slide level2">
 <h2>Esercizio Lezione 2</h2>
 <h3 id="task">Task</h3>
@@ -786,7 +870,7 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 </ul></li>
 </ol>
 </section>
-<section id="riepilogo-lezione-2" class="slide level2">
+<section id="riepilogo-lezione-2" class="slide level2 smaller">
 <h2>Riepilogo Lezione 2</h2>
 <h3 id="community-detection-1">Community Detection</h3>
 <table>
@@ -826,6 +910,21 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 <tr class="even">
 <td><code>bipartite.projection()</code></td>
 <td>Calcola proiezioni</td>
+</tr>
+</tbody>
+</table>
+<h3 id="coordinated-sharing">Coordinated Sharing</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Strumento</th>
+<th>Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/nicolarighetti/coortweet">coortweet</a></td>
+<td>Detection coordinamento su Twitter/X</td>
 </tr>
 </tbody>
 </table>

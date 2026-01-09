@@ -1,5 +1,5 @@
 ---
-title: "Twitter, Community Detection, Reti Bipartite"
+title: "Reti Sociali, Community Detection e Coordinated Sharing"
 subtitle: "Lezione 2 — Online"
 author: "Prof. Fabio Giglietto"
 format:
@@ -14,18 +14,21 @@ format:
 
 ## Agenda Lezione 2
 
-1. **Reti da Twitter Data**
+1. **Reti da Social Media Data**
    - Rete retweet
    - Rete utente-hashtag
 
 2. **Community Detection**
    - Edge Betweenness
    - Louvain
-   - Confronto partizioni (NMI)
 
 3. **Reti Bipartite**
    - Due tipi di nodi
    - Proiezioni
+
+4. **Coordinated Sharing Detection**
+   - Comportamenti coordinati
+   - [coortweet](https://github.com/nicolarighetti/coortweet)
 
 ## Dati Twitter
 
@@ -332,6 +335,76 @@ Il **peso** indica quanti hashtag in comune hanno due utenti.
 - Hashtag usati insieme → **co-occorrenza**
 - Cluster = **temi correlati**
 
+## Coordinated Sharing Detection
+
+Il **coordinated sharing** è un comportamento in cui più account condividono gli stessi contenuti in modo sincronizzato.
+
+::: {.callout-important}
+## Perché è importante per OSINT
+Identificare comportamenti coordinati può rivelare:
+
+- Campagne di disinformazione
+- Astroturfing e manipolazione
+- Reti di bot o account inautentici
+:::
+
+## coortweet: Il Pacchetto R
+
+[coortweet](https://github.com/nicolarighetti/coortweet) rileva comportamenti coordinati su Twitter/X.
+
+```r
+# Installazione
+devtools::install_github("nicolarighetti/coortweet")
+
+library(coortweet)
+```
+
+### Principio di funzionamento
+
+1. Identifica URL/contenuti condivisi da più utenti
+2. Calcola finestre temporali di condivisione
+3. Crea rete di co-sharing tra utenti
+4. Rileva cluster di account coordinati
+
+## coortweet: Esempio {.smaller}
+
+```r
+library(coortweet)
+
+# Carica dati Twitter (formato accademico API v2)
+result <- detect_coordinated_sharing(
+  data = tweets_df,
+  time_window = 60,        # secondi
+  min_repetition = 2,      # condivisioni minime
+  percentile_edge = 0.95   # soglia per archi
+)
+
+# Risultati
+result$network        # rete igraph
+result$coordinated    # utenti coordinati
+result$highly_coord   # cluster principali
+```
+
+## coortweet: Visualizzazione
+
+```r
+library(ggraph)
+
+# Visualizza la rete di coordinamento
+g <- result$network
+
+ggraph(g, layout = "fr") +
+  geom_edge_link(alpha = 0.3) +
+  geom_node_point(aes(color = as.factor(cluster)), size = 3) +
+  theme_graph() +
+  labs(color = "Cluster")
+```
+
+::: {.callout-tip}
+## Interpretazione
+Account nello stesso cluster hanno condiviso gli stessi contenuti entro la finestra temporale definita.
+:::
+
 ## Esercizio Lezione 2
 
 ### Task
@@ -346,7 +419,7 @@ Il **peso** indica quanti hashtag in comune hanno due utenti.
    - Calcola degree nella proiezione
    - Chi sono gli utenti più "simili" agli altri?
 
-## Riepilogo Lezione 2
+## Riepilogo Lezione 2 {.smaller}
 
 ### Community Detection
 
@@ -361,6 +434,12 @@ Il **peso** indica quanti hashtag in comune hanno due utenti.
 |----------|-------------|
 | `bipartite.mapping()` | Verifica/crea bipartita |
 | `bipartite.projection()` | Calcola proiezioni |
+
+### Coordinated Sharing
+
+| Strumento | Descrizione |
+|-----------|-------------|
+| [coortweet](https://github.com/nicolarighetti/coortweet) | Detection coordinamento su Twitter/X |
 
 ## Esercizi Consigliati {.smaller}
 
