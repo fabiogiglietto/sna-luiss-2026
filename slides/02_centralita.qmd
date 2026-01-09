@@ -295,20 +295,15 @@ Spesso conviene calcolare **tutte** e confrontare!
 - Betweenness identifica broker "nascosti"
 - Correlazione degree-eigenvector alta
 
-## Esercizi Consigliati
+## Esercizi Consigliati {.smaller}
 
-Pratica con gli esercizi del libro [The Atlas for the Aspiring Network Scientist](https://networkatlas.eu):
+Pratica con gli esercizi di [The Atlas for the Aspiring Network Scientist](https://networkatlas.eu):
 
-### Capitolo 13 — Shortest Paths e BFS
-- [Esercizio 13.1](https://www.networkatlas.eu/exercises/13_1.htm) — BFS traversal
-
-### Capitolo 14 — Closeness Centrality
-- [Esercizio 14.1](https://www.networkatlas.eu/exercises/14_1.htm) — Calcolare closeness centrality
-- [Esercizio 14.2](https://www.networkatlas.eu/exercises/14_2.htm) — Confronto closeness
-
-### Capitolo 15 — Betweenness Centrality
-- [Esercizio 15.1](https://www.networkatlas.eu/exercises/15_1.htm) — Calcolare betweenness
-- [Esercizio 15.2](https://www.networkatlas.eu/exercises/15_2.htm) — Interpretare betweenness
+| Capitolo | Esercizio | Argomento |
+|----------|-----------|-----------|
+| 13 | [13.1](https://www.networkatlas.eu/exercises/13_1.htm) | BFS traversal |
+| 14 | [14.1](https://www.networkatlas.eu/exercises/14_1.htm), [14.2](https://www.networkatlas.eu/exercises/14_2.htm) | Closeness centrality |
+| 15 | [15.1](https://www.networkatlas.eu/exercises/15_1.htm), [15.2](https://www.networkatlas.eu/exercises/15_2.htm) | Betweenness centrality |
 
 ## Domande? {.center}
 
