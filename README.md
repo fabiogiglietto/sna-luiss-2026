@@ -1,10 +1,12 @@
 # Social Network Analysis
 
-**Modulo 6 — Master OSINT, AI e Security Studies**  
+**Modulo 6 — Master OSINT, AI e Security Studies**
 LUISS 2025/26
 
-Prof. Fabio Giglietto  
+Prof. Fabio Giglietto
 📧 fabio.giglietto@uniurb.it
+
+🌐 **Sito del corso:** [fabiogiglietto.github.io/sna-luiss-2026](https://fabiogiglietto.github.io/sna-luiss-2026/)
 
 ---
 
@@ -97,12 +99,14 @@ Esegui `scripts/setup_verifica.R` — se vedi "Setup completato!", sei pronto.
 │   ├── setup_verifica.R       # Script verifica installazione
 │   └── lab_sna_lezione1.R     # Script completo laboratorio
 ├── slides/
-│   ├── SNA_00_Presentazione_Corso.pptx
-│   ├── SNA_Blocco1_Rappresentazioni.pptx
-│   ├── SNA_Blocco2_Centralita.pptx
-│   └── SNA_Blocco3_Laboratorio.pptx
+│   ├── 00_presentazione.qmd   # Presentazione corso
+│   ├── 01_rappresentazioni.qmd
+│   ├── 02_centralita.qmd
+│   ├── 03_laboratorio.qmd
+│   └── 04_lezione2.qmd
 └── docs/
-    └── index.html             # Sito web del corso
+    ├── index.html             # Sito web del corso
+    └── slides/                # Slide renderizzate (HTML)
 ```
 
 ---
