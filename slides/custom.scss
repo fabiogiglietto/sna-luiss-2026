@@ -1,15 +1,25 @@
 /*-- scss:defaults --*/
 
+/* Okabe-Ito color-blind friendly palette */
+$cb-orange: #E69F00;
+$cb-skyblue: #56B4E9;
+$cb-green: #009E73;
+$cb-yellow: #F0E442;
+$cb-blue: #0072B2;
+$cb-vermillion: #D55E00;
+$cb-purple: #CC79A7;
+$cb-black: #000000;
+
 $body-bg: #ffffff;
 $body-color: #2d3748;
-$link-color: #3182ce;
-$selection-bg: #ed8936;
+$link-color: $cb-blue;
+$selection-bg: $cb-orange;
 
 $presentation-heading-font: 'Georgia', serif;
-$presentation-heading-color: #1a365d;
+$presentation-heading-color: $cb-black;
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 
-$code-block-bg: #1a365d;
+$code-block-bg: #2d3748;
 $code-color: #e2e8f0;
 
 /*-- scss:rules --*/
@@ -19,7 +29,7 @@ $code-color: #e2e8f0;
 }
 
 .reveal h2 {
-  border-bottom: 3px solid #ed8936;
+  border-bottom: 3px solid $cb-orange;
   padding-bottom: 10px;
 }
 
@@ -28,7 +38,7 @@ $code-color: #e2e8f0;
 }
 
 .reveal pre {
-  background: #1a365d;
+  background: #2d3748;
   border-radius: 8px;
   padding: 1em;
 }
@@ -44,23 +54,23 @@ $code-color: #e2e8f0;
 }
 
 .reveal .callout-note {
-  border-left-color: #3182ce;
-  background: #ebf8ff;
+  border-left-color: $cb-blue;
+  background: #e8f4fc;
 }
 
 .reveal .callout-tip {
-  border-left-color: #38a169;
-  background: #f0fff4;
+  border-left-color: $cb-green;
+  background: #e6f7f1;
 }
 
 .reveal .callout-important {
-  border-left-color: #ed8936;
-  background: #fffaf0;
+  border-left-color: $cb-orange;
+  background: #fef6e6;
 }
 
 .reveal .callout-warning {
-  border-left-color: #e53e3e;
-  background: #fff5f5;
+  border-left-color: $cb-vermillion;
+  background: #fef0e6;
 }
 
 .reveal table {
@@ -68,7 +78,7 @@ $code-color: #e2e8f0;
 }
 
 .reveal table th {
-  background: #1a365d;
+  background: $cb-blue;
   color: white;
 }
 
@@ -90,3 +100,11 @@ $code-color: #e2e8f0;
 .reveal .columns {
   gap: 2em;
 }
+
+/* Color-blind friendly highlight classes */
+.cb-orange { color: $cb-orange; }
+.cb-blue { color: $cb-blue; }
+.cb-green { color: $cb-green; }
+.cb-vermillion { color: $cb-vermillion; }
+.cb-purple { color: $cb-purple; }
+.cb-skyblue { color: $cb-skyblue; }
