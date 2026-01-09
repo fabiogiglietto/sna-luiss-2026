@@ -1,0 +1,347 @@
+---
+title: "Laboratorio"
+subtitle: "Blocco 3 — Lezione 1"
+author: "Prof. Fabio Giglietto"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Blocco 3: Laboratorio"
+    transition: slide
+    highlight-style: github
+    code-line-numbers: false
+---
+
+## Obiettivo del Lab
+
+Analizzare la rete **Storm of Swords** (Game of Thrones) con R/igraph.
+
+### Workflow
+
+1. Import dati CSV
+2. Creare grafo
+3. Calcolare metriche
+4. Visualizzare
+5. Export per Gephi
+
+::: {.callout-note}
+File: `data/stormofswords.csv` — 107 personaggi, 352 interazioni
+:::
+
+## Il Dataset
+
+Rete di **co-occorrenza** dei personaggi nel libro "A Storm of Swords".
+
+- **Nodi**: personaggi
+- **Archi**: interazioni (compaiono insieme)
+- **Peso**: frequenza delle interazioni
+
+```
+Source,Target,Weight
+Aemon,Samwell,31
+Arya,Sandor,46
+Jaime,Brienne,88
+...
+```
+
+## Setup e Import
+
+```r
+# Carica i pacchetti
+library(igraph)
+library(readr)
+library(ggraph)
+library(tidyverse)
+
+# Importa il dataset
+edges <- read_csv("data/stormofswords.csv")
+
+# Crea il grafo
+g <- graph.data.frame(edges, directed = FALSE)
+```
+
+::: {.callout-tip}
+## Working Directory
+Imposta: Session → Set Working Directory → Choose Directory
+:::
+
+## Verifica Import
+
+```r
+# Info base
+vcount(g)            # Numero nodi
+ecount(g)            # Numero archi
+graph.density(g)     # Densità
+is.connected(g)      # È connesso?
+components(g)$no     # Numero componenti
+```
+
+Output atteso:
+
+- 107 nodi
+- 352 archi
+- ~6% densità
+- 1 componente (tutti connessi)
+
+## Prima Visualizzazione
+
+```r
+# Visualizzazione base
+ggraph(g, layout = "stress") +
+  geom_edge_link(color = "gray70", alpha = 0.5) +
+  geom_node_point(color = "steelblue", size = 2) +
+  theme_graph()
+```
+
+### Layout disponibili
+
+| Layout | Uso |
+|--------|-----|
+| `"stress"` | Default consigliato |
+| `"fr"` | Fruchterman-Reingold |
+| `"kk"` | Kamada-Kawai |
+| `"circle"` | Disposizione circolare |
+
+## Accesso a Nodi e Archi
+
+```r
+# Lista nodi
+V(g)
+V(g)$name[1:10]
+
+# Lista archi
+E(g)
+E(g)[1:5]
+
+# Accesso per nome
+V(g)["Tyrion"]
+V(g)["Jon"]
+```
+
+## Filtrare Nodi e Archi
+
+```r
+# Nodi con nome che inizia per "S"
+V(g)[grepl("^S", V(g)$name)]
+
+# Archi con peso > 50
+E(g)[E(g)$Weight > 50]
+
+# Archi di un nodo specifico
+E(g)[.inc("Tyrion")]
+```
+
+## Aggiungere Attributi
+
+```r
+# Aggiungi degree come attributo
+V(g)$deg <- degree(g)
+
+# Aggiungi betweenness
+V(g)$bet <- betweenness(g)
+
+# Verifica
+head(V(g)$deg)
+```
+
+::: {.callout-important}
+Gli attributi restano attaccati al grafo e possono essere usati per la visualizzazione.
+:::
+
+## Degree Centrality
+
+```r
+# Calcola degree
+deg <- degree(g)
+
+# Top 10
+sort(deg, decreasing = TRUE)[1:10]
+
+# Statistiche
+mean(deg)
+median(deg)
+max(deg)
+```
+
+### Risultati
+
+| Personaggio | Degree |
+|-------------|--------|
+| Tyrion | 36 |
+| Jon | 26 |
+| Sansa | 26 |
+| Jaime | 24 |
+| Robb | 24 |
+
+## Betweenness Centrality
+
+```r
+# Calcola betweenness
+bet <- betweenness(g)
+
+# Top 5
+sort(bet, decreasing = TRUE)[1:5]
+```
+
+| Personaggio | Betweenness |
+|-------------|-------------|
+| Jon | 1279.7 |
+| Robert | 1165.6 |
+| Tyrion | 1101.4 |
+| Daenerys | 874.4 |
+| Robb | 706.4 |
+
+**Jon** fa da ponte tra mondi narrativi!
+
+## Altre Centralità
+
+```r
+# Closeness
+clo <- closeness(g)
+sort(clo, decreasing = TRUE)[1:5]
+
+# Eigenvector
+eig <- eigen_centrality(g)$vector
+sort(eig, decreasing = TRUE)[1:5]
+```
+
+## DataFrame Riassuntivo
+
+```r
+# Crea dataframe con tutte le metriche
+df <- data.frame(
+  name = V(g)$name,
+  degree = degree(g),
+  betweenness = betweenness(g),
+  closeness = closeness(g),
+  eigenvector = eigen_centrality(g)$vector
+)
+
+# Ordina per betweenness
+df %>% arrange(desc(betweenness)) %>% head(10)
+```
+
+## Matrice di Correlazione
+
+```r
+library(corrplot)
+
+# Seleziona solo colonne numeriche
+df_num <- df %>% select(-name)
+
+# Calcola correlazioni
+cor_matrix <- cor(df_num)
+
+# Visualizza
+corrplot(cor_matrix, method = "number", type = "upper")
+```
+
+## Visualizzazione con Centralità
+
+```r
+# Salva attributi nel grafo
+V(g)$deg <- degree(g)
+V(g)$bet <- betweenness(g)
+
+# Visualizza
+ggraph(g, layout = "fr") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(aes(size = deg, color = bet)) +
+  scale_color_viridis_c(option = "plasma") +
+  geom_node_text(
+    aes(label = ifelse(deg > 20, name, "")),
+    repel = TRUE, size = 3
+  ) +
+  theme_graph() +
+  labs(size = "Degree", color = "Betweenness")
+```
+
+## Export per Gephi
+
+```r
+# Salva in formato GraphML
+write.graph(g, "stormofswords.graphml", format = "graphml")
+```
+
+::: {.callout-note}
+## Formato GraphML
+- Preserva **tutti** gli attributi dei nodi
+- Apri in Gephi: File → Open
+- Le metriche calcolate in R saranno disponibili in Gephi
+:::
+
+## Workflow Gephi
+
+1. **File → Open** → `stormofswords.graphml`
+2. **Appearance** (sinistra):
+   - Nodes → Size → Ranking → `deg`
+   - Nodes → Color → Ranking → `bet`
+3. **Layout** (sinistra):
+   - ForceAtlas 2 → Run
+4. **Preview** (tab in alto):
+   - Refresh → Export PNG/PDF
+
+## Esercizio Guidato {.smaller}
+
+### Task (20 minuti)
+
+1. Importa `stormofswords.csv` e crea il grafo
+2. Calcola degree, betweenness, closeness, eigenvector
+3. Trova il personaggio con **max betweenness**
+4. Trova l'arco con **peso massimo**
+5. Crea una visualizzazione con size=degree, color=betweenness
+
+### Domande di analisi
+
+- Perché Jon ha max betweenness ma non max degree?
+- Quali mondi narrativi collega Jon?
+- Cosa significa che Jaime-Brienne ha peso 88?
+
+## Soluzione Esercizio
+
+```r
+# 1-2. Import e metriche
+edges <- read_csv("data/stormofswords.csv")
+g <- graph.data.frame(edges, directed = FALSE)
+
+# 3. Max betweenness
+which.max(betweenness(g))  # Jon
+
+# 4. Max weight edge
+E(g)[which.max(E(g)$Weight)]  # Jaime--Brienne (88)
+
+# 5. Visualizzazione
+V(g)$deg <- degree(g)
+V(g)$bet <- betweenness(g)
+# ... (vedi slide precedente)
+```
+
+## Riepilogo Blocco 3
+
+### Workflow completo
+
+1. `read_csv()` → importa dati
+2. `graph.data.frame()` → crea grafo
+3. `degree()`, `betweenness()`, etc. → calcola metriche
+4. `ggraph()` → visualizza in R
+5. `write.graph()` → export per Gephi
+
+### File utili
+
+- `scripts/lab_sna_lezione1.R` — script completo
+- `data/stormofswords.csv` — dataset
+
+## Prossimi Passi {.center}
+
+### Lezione 2 (Online)
+
+- Dati Twitter reali
+- Community detection
+- Reti bipartite
+
+### Da fare prima della Lezione 2
+
+1. Completare esercizio Storm of Swords
+2. Installare Gephi
+3. Leggere cap. 16-20 di networkatlas.eu

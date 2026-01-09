@@ -1,0 +1,382 @@
+---
+title: "Twitter, Community Detection, Reti Bipartite"
+subtitle: "Lezione 2 — Online"
+author: "Prof. Fabio Giglietto"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Lezione 2"
+    transition: slide
+    highlight-style: github
+---
+
+## Agenda Lezione 2
+
+1. **Reti da Twitter Data**
+   - Rete retweet
+   - Rete utente-hashtag
+
+2. **Community Detection**
+   - Edge Betweenness
+   - Louvain
+   - Confronto partizioni (NMI)
+
+3. **Reti Bipartite**
+   - Due tipi di nodi
+   - Proiezioni
+
+## Dati Twitter
+
+Come abbiamo visto, per costruire una rete servono **attori** e **relazioni**.
+
+Con dati Twitter possiamo costruire reti diverse dalla stessa conversazione:
+
+| Tipo rete | Nodi | Archi |
+|-----------|------|-------|
+| Retweet | Utenti | Chi retweeta chi |
+| Menzioni | Utenti | Chi menziona chi |
+| Reply | Utenti | Chi risponde a chi |
+| Hashtag | Utenti + Hashtag | Chi usa quale hashtag |
+
+## Caricare i Dati
+
+```r
+# Carica il workspace
+load("data/lezione2.RData")
+
+# Cosa contiene?
+ls()  # g_retweet, g_hashtag, ...
+```
+
+Il file `.RData` contiene reti già costruite:
+
+- `g_retweet`: rete retweet (diretto)
+- `g_hashtag`: rete utente-hashtag (bipartita)
+
+## Rete Retweet
+
+```r
+# Info base
+g_retweet
+vcount(g_retweet)
+ecount(g_retweet)
+is.directed(g_retweet)  # TRUE
+```
+
+::: {.callout-note}
+## Interpretazione archi
+Arco da A → B significa: **A ha retweetato B**
+:::
+
+```r
+# Visualizza
+ggraph(g_retweet, layout = "fr") +
+  geom_edge_link(alpha = 0.3, 
+    arrow = arrow(length = unit(2, "mm"))) +
+  geom_node_point(size = 2) +
+  theme_graph()
+```
+
+## Analisi Rete Retweet
+
+```r
+# In-degree: chi viene retweetato di più
+sort(degree(g_retweet, mode = "in"), decreasing = TRUE)[1:5]
+
+# Out-degree: chi retweeta di più
+sort(degree(g_retweet, mode = "out"), decreasing = TRUE)[1:5]
+
+# Betweenness
+sort(betweenness(g_retweet), decreasing = TRUE)[1:5]
+```
+
+::: {.callout-tip}
+## OSINT Insight
+Alto **in-degree** = fonte di informazione  
+Alto **out-degree** = amplificatore/bot?
+:::
+
+## Community Detection
+
+### Obiettivo
+
+Trovare gruppi di nodi **più connessi internamente** che con il resto della rete.
+
+### Perché è utile?
+
+- Identificare fazioni/gruppi politici
+- Scoprire echo chambers
+- Rilevare comportamenti coordinati
+
+## Algoritmo Edge Betweenness
+
+**Idea**: rimuovi iterativamente gli archi con betweenness più alta.
+
+```r
+# Community detection
+com_eb <- cluster_edge_betweenness(g_retweet)
+
+# Risultati
+length(com_eb)           # Numero comunità
+membership(com_eb)       # Appartenenza di ogni nodo
+sizes(com_eb)            # Dimensione comunità
+```
+
+::: {.callout-note}
+## Complessità
+O(m²n) — lento su reti grandi
+:::
+
+## Algoritmo Louvain
+
+**Idea**: ottimizza la **modularità** in modo greedy e gerarchico.
+
+```r
+# Community detection
+com_louvain <- cluster_louvain(g_retweet)
+
+# Risultati
+length(com_louvain)
+membership(com_louvain)
+sizes(com_louvain)
+```
+
+::: {.callout-tip}
+## Vantaggi Louvain
+- Molto veloce: O(n log n)
+- Scalabile a milioni di nodi
+- Risultati generalmente buoni
+:::
+
+## Modularità
+
+La **modularità** misura la qualità di una partizione:
+
+$$Q = \frac{1}{2m} \sum_{ij} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j)$$
+
+- Q ∈ [-0.5, 1]
+- Q > 0.3 indica struttura comunitaria significativa
+
+```r
+modularity(com_louvain)
+modularity(com_eb)
+```
+
+## Confrontare Partizioni: NMI
+
+**Normalized Mutual Information** misura quanto due partizioni sono simili.
+
+```r
+# Confronta Louvain vs Edge Betweenness
+compare(com_louvain, com_eb, method = "nmi")
+```
+
+- NMI = 1: partizioni identiche
+- NMI = 0: partizioni indipendenti
+
+::: {.callout-note}
+## Altri metodi
+`"vi"` (Variation of Information), `"ari"` (Adjusted Rand Index)
+:::
+
+## Visualizzare le Comunità
+
+```r
+# Aggiungi comunità come attributo
+V(g_retweet)$community <- membership(com_louvain)
+
+# Visualizza
+ggraph(g_retweet, layout = "fr") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(aes(color = factor(community)), size = 3) +
+  scale_color_brewer(palette = "Set2") +
+  theme_graph() +
+  labs(color = "Comunità")
+```
+
+## Interpretare le Comunità
+
+```r
+# Nodi in una comunità specifica
+V(g_retweet)[membership(com_louvain) == 1]$name
+
+# Top nodi per comunità (by degree)
+df <- data.frame(
+  name = V(g_retweet)$name,
+  community = membership(com_louvain),
+  degree = degree(g_retweet)
+)
+
+df %>% 
+  group_by(community) %>% 
+  slice_max(degree, n = 3)
+```
+
+::: {.callout-important}
+## Ispezione manuale
+Spesso l'unico modo per "dare senso" alle comunità è ispezionare manualmente chi ne fa parte.
+:::
+
+## Reti Bipartite
+
+Una rete **bipartita** ha due tipi di nodi, con archi solo tra tipi diversi.
+
+:::: {.columns}
+::: {.column width="50%"}
+### Esempi
+- Utenti ↔ Hashtag
+- Autori ↔ Paper
+- Persone ↔ Eventi
+- Utenti ↔ Prodotti
+:::
+
+::: {.column width="50%"}
+```{mermaid}
+graph LR
+    U1((User1)) --- H1[#covid]
+    U1 --- H2[#vaccine]
+    U2((User2)) --- H1
+    U3((User3)) --- H2
+    U3 --- H3[#health]
+```
+:::
+::::
+
+## Creare Rete Bipartita
+
+```r
+# La rete g_hashtag è già utente-hashtag
+g_hashtag
+
+# Verifica: è bipartita?
+is.bipartite(g_hashtag)
+```
+
+Per essere riconosciuta come bipartita, i nodi devono avere attributo `type`:
+
+```r
+# TRUE = un tipo, FALSE = altro tipo
+V(g_hashtag)$type
+```
+
+## Identificare i Tipi
+
+Se `type` non esiste, possiamo ricavarlo dalla struttura:
+
+```r
+# In una rete utente→hashtag:
+# Gli utenti hanno in-degree = 0
+V(g_hashtag)$type <- degree(g_hashtag, mode = "in") == 0
+
+# Verifica
+table(V(g_hashtag)$type)
+```
+
+## Visualizzare Rete Bipartita
+
+```r
+ggraph(g_hashtag, layout = "bipartite") +
+  geom_edge_link(alpha = 0.3) +
+  geom_node_point(aes(color = type, shape = type), size = 3) +
+  scale_color_manual(values = c("steelblue", "coral")) +
+  theme_graph()
+```
+
+## Proiezioni
+
+Una **proiezione** trasforma una rete bipartita in una rete "normale".
+
+```r
+# Calcola le due proiezioni
+proj <- bipartite.projection(g_hashtag)
+
+# Proiezione utenti
+g_users <- proj$proj1
+# Due utenti sono connessi se usano lo stesso hashtag
+
+# Proiezione hashtag
+g_hashtags <- proj$proj2
+# Due hashtag sono connessi se usati dallo stesso utente
+```
+
+## Proiezione Utenti
+
+```r
+# Info
+vcount(g_users)
+ecount(g_users)
+
+# Visualizza
+ggraph(g_users, layout = "fr") +
+  geom_edge_link(aes(alpha = weight)) +
+  geom_node_point(size = 3, color = "steelblue") +
+  theme_graph()
+```
+
+::: {.callout-important}
+## Peso degli archi
+Il **peso** indica quanti hashtag in comune hanno due utenti.
+:::
+
+## Applicazioni OSINT
+
+### Proiezione utenti (da hashtag)
+
+- Utenti che usano stessi hashtag → **stessa narrativa**
+- Cluster = potenziali **gruppi coordinati**
+
+### Proiezione hashtag (da utenti)
+
+- Hashtag usati insieme → **co-occorrenza**
+- Cluster = **temi correlati**
+
+## Esercizio Lezione 2
+
+### Task
+
+1. Carica `lezione2.RData`
+2. Sulla rete retweet:
+   - Calcola community con Louvain
+   - Visualizza colorando per comunità
+   - Identifica top 3 utenti per ogni comunità
+3. Sulla rete hashtag:
+   - Crea proiezione utenti
+   - Calcola degree nella proiezione
+   - Chi sono gli utenti più "simili" agli altri?
+
+## Riepilogo Lezione 2
+
+### Community Detection
+
+| Algoritmo | Funzione | Velocità |
+|-----------|----------|----------|
+| Edge Betweenness | `cluster_edge_betweenness()` | Lento |
+| Louvain | `cluster_louvain()` | Veloce |
+
+### Reti Bipartite
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `bipartite.mapping()` | Verifica/crea bipartita |
+| `bipartite.projection()` | Calcola proiezioni |
+
+## Prossimi Passi {.center}
+
+### Approfondimenti
+
+- Altre metriche di comunità (infomap, label propagation)
+- Reti multiplex
+- Analisi temporale
+
+### Risorse
+
+- networkatlas.eu cap. 16-20
+- igraph.org/r/doc/
+- Gephi per visualizzazione interattiva
+
+## Domande? {.center}
+
+**Prof. Fabio Giglietto**  
+📧 fabio.giglietto@uniurb.it

@@ -1,0 +1,302 @@
+---
+title: "Centralità"
+subtitle: "Blocco 2 — Lezione 1"
+author: "Prof. Fabio Giglietto"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Blocco 2: Centralità"
+    transition: slide
+    highlight-style: github
+---
+
+## Cos'è la Centralità?
+
+La **centralità** misura l'**importanza** di un nodo nella rete.
+
+::: {.callout-note}
+## Domanda chiave
+Chi sono gli attori più importanti? E "importante" in che senso?
+:::
+
+### Diverse definizioni di "importante"
+
+- Chi ha più connessioni? → **Degree**
+- Chi controlla i flussi? → **Betweenness**
+- Chi raggiunge tutti velocemente? → **Closeness**
+- Chi conosce gente importante? → **Eigenvector**
+
+## Degree Centrality
+
+La misura più semplice: **numero di connessioni**
+
+$$C_D(v) = \text{degree}(v)$$
+
+```r
+degree(g)
+degree(g, v = "Tyrion")
+```
+
+### Interpretazione
+
+- **Alto degree** = hub, nodo popolare
+- **Basso degree** = nodo periferico
+
+::: {.callout-tip}
+## Applicazione OSINT
+Account con molti follower/following
+:::
+
+## Degree: Esempio Storm of Swords
+
+```r
+# Top 5 per degree
+sort(degree(g), decreasing = TRUE)[1:5]
+```
+
+| Personaggio | Degree |
+|-------------|--------|
+| Tyrion | 36 |
+| Jon | 26 |
+| Sansa | 26 |
+| Jaime | 24 |
+| Robb | 24 |
+
+**Tyrion** è il più connesso: mediatore tra fazioni (Lannister, corte, etc.)
+
+## Betweenness Centrality
+
+Misura quanti **cammini minimi** passano attraverso un nodo.
+
+$$C_B(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$$
+
+dove $\sigma_{st}$ = numero cammini minimi da $s$ a $t$
+
+```r
+betweenness(g)
+betweenness(g, v = "Jon")
+```
+
+### Interpretazione
+
+- **Alta betweenness** = broker, gatekeeper
+- Controlla il flusso di informazioni
+
+## Betweenness: Visualizzazione
+
+```{mermaid}
+graph LR
+    A --- B
+    B --- C
+    B --- D
+    C --- E
+    D --- E
+```
+
+Il nodo **B** ha alta betweenness: tutti i cammini da A passano per B.
+
+::: {.callout-important}
+## Applicazione OSINT
+Identificare chi fa da ponte tra gruppi diversi (es. tra celle terroristiche, tra community politiche)
+:::
+
+## Betweenness: Esempio Storm of Swords
+
+```r
+sort(betweenness(g), decreasing = TRUE)[1:5]
+```
+
+| Personaggio | Betweenness |
+|-------------|-------------|
+| Jon | 1279.7 |
+| Robert | 1165.6 |
+| Tyrion | 1101.4 |
+| Daenerys | 874.4 |
+| Robb | 706.4 |
+
+**Jon** ha la betweenness più alta! Collega mondi narrativi diversi:
+
+- Guardiani della Notte
+- Bruti/Wildlings
+- Casa Stark
+
+## Closeness Centrality
+
+Misura quanto un nodo è **vicino** a tutti gli altri.
+
+$$C_C(v) = \frac{n-1}{\sum_{u \neq v} d(v,u)}$$
+
+dove $d(v,u)$ = distanza tra $v$ e $u$
+
+```r
+closeness(g)
+```
+
+### Interpretazione
+
+- **Alta closeness** = può raggiungere tutti rapidamente
+- Efficienza nella diffusione di informazioni
+
+## Closeness: Esempio
+
+```r
+sort(closeness(g), decreasing = TRUE)[1:5]
+```
+
+| Personaggio | Closeness |
+|-------------|-----------|
+| Tyrion | 0.43 |
+| Sansa | 0.42 |
+| Jaime | 0.41 |
+| Robb | 0.41 |
+| Jon | 0.40 |
+
+**Tyrion** raggiunge tutti i personaggi più velocemente.
+
+## Eigenvector Centrality
+
+Un nodo è importante se è connesso a **nodi importanti**.
+
+Definizione ricorsiva (come PageRank di Google):
+
+$$C_E(v) = \frac{1}{\lambda} \sum_{u \in N(v)} C_E(u)$$
+
+```r
+eigen_centrality(g)$vector
+```
+
+::: {.callout-note}
+## Intuizione
+Non conta solo quante connessioni hai, ma **chi** conosci.
+:::
+
+## Eigenvector: Esempio
+
+```r
+sort(eigen_centrality(g)$vector, decreasing = TRUE)[1:5]
+```
+
+| Personaggio | Eigenvector |
+|-------------|-------------|
+| Tyrion | 1.00 |
+| Sansa | 0.85 |
+| Jaime | 0.80 |
+| Robb | 0.75 |
+| Cersei | 0.74 |
+
+**Tyrion** è connesso a personaggi a loro volta molto connessi.
+
+## Confronto: Le 4 Centralità
+
+| Centralità | Domanda | Top in GoT |
+|------------|---------|------------|
+| **Degree** | Chi ha più amici? | Tyrion |
+| **Betweenness** | Chi fa da ponte? | Jon |
+| **Closeness** | Chi raggiunge tutti? | Tyrion |
+| **Eigenvector** | Chi conosce VIP? | Tyrion |
+
+::: {.callout-important}
+## Insight chiave
+Jon ha **max betweenness** ma non max degree: collega mondi diversi senza essere il più popolare.
+:::
+
+## Correlazione tra Metriche
+
+```r
+df <- data.frame(
+  degree = degree(g),
+  betweenness = betweenness(g),
+  closeness = closeness(g),
+  eigenvector = eigen_centrality(g)$vector
+)
+cor(df)
+```
+
+| | Degree | Between. | Close. | Eigen. |
+|--|--------|----------|--------|--------|
+| Degree | 1.00 | 0.81 | 0.84 | 0.91 |
+| Between. | 0.81 | 1.00 | 0.66 | 0.68 |
+| Close. | 0.84 | 0.66 | 1.00 | 0.83 |
+| Eigen. | 0.91 | 0.68 | 0.83 | 1.00 |
+
+## Interpretazione Correlazioni
+
+- **Degree ↔ Eigenvector** (0.91): molto correlate
+- **Betweenness** è la più indipendente
+
+::: {.callout-tip}
+## Implicazione pratica
+Betweenness cattura un'informazione diversa: identifica **broker** che non sono necessariamente hub.
+:::
+
+## Normalizzazione
+
+Le metriche hanno scale diverse. Per confrontare:
+
+```r
+# Normalizzazione 0-1
+degree_norm <- degree(g) / max(degree(g))
+
+# O usando normalized = TRUE (se disponibile)
+betweenness(g, normalized = TRUE)
+closeness(g, normalized = TRUE)
+```
+
+## Visualizzare la Centralità
+
+```r
+library(ggraph)
+
+V(g)$deg <- degree(g)
+V(g)$bet <- betweenness(g)
+
+ggraph(g, layout = "fr") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(aes(size = deg, color = bet)) +
+  scale_color_viridis_c() +
+  theme_graph()
+```
+
+Mapping visivo:
+
+- **Size** = degree
+- **Color** = betweenness
+
+## Quale Centralità Usare?
+
+| Contesto | Metrica consigliata |
+|----------|---------------------|
+| Influencer, popolarità | Degree |
+| Broker, gatekeeper | Betweenness |
+| Diffusione rapida | Closeness |
+| Prestigio, autorità | Eigenvector/PageRank |
+| Resilienza rete | Betweenness |
+
+::: {.callout-note}
+Spesso conviene calcolare **tutte** e confrontare!
+:::
+
+## Riepilogo Blocco 2
+
+### Le 4 centralità
+
+| Metrica | Formula R | Misura |
+|---------|-----------|--------|
+| Degree | `degree(g)` | Connessioni |
+| Betweenness | `betweenness(g)` | Controllo flussi |
+| Closeness | `closeness(g)` | Vicinanza |
+| Eigenvector | `eigen_centrality(g)$vector` | Prestigio |
+
+### Insight chiave
+
+- Metriche diverse = domande diverse
+- Betweenness identifica broker "nascosti"
+- Correlazione degree-eigenvector alta
+
+## Domande? {.center}
+
+Prossimo blocco: **Laboratorio**
+
+Mettiamo in pratica con R e Gephi!

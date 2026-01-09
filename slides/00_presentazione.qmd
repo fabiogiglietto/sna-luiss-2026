@@ -1,0 +1,263 @@
+---
+title: "Social Network Analysis"
+subtitle: "Modulo 6 — Master OSINT, AI e Security Studies"
+author: "Prof. Fabio Giglietto"
+institute: "LUISS 2025/26"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    logo: ""
+    footer: "SNA — Master OSINT, AI e Security Studies"
+    transition: slide
+    highlight-style: github
+---
+
+## Perché Social Network Analysis? {.smaller}
+
+La SNA permette di analizzare **relazioni e strutture nascoste** nei dati.
+
+:::: {.columns}
+::: {.column width="50%"}
+### 🎯 Disinformazione
+Identificare reti di account coordinati e campagne di influenza
+
+### 🔍 Intelligence
+Mappare relazioni tra entità, scoprire strutture organizzative
+
+### 💻 Digital Forensics
+Tracciare flussi di informazione, ricostruire timeline
+:::
+
+::: {.column width="50%"}
+::: {.callout-tip}
+## Il vantaggio delle reti
+Non importa solo **chi sei**, ma **chi conosci** e **come sei connesso**.
+:::
+:::
+::::
+
+## Obiettivi del Modulo
+
+::: {.incremental}
+1. **Comprendere i fondamenti teorici**
+   - Grafi, nodi, archi, rappresentazioni, proprietà strutturali
+
+2. **Padroneggiare le metriche di centralità**
+   - Degree, betweenness, closeness, eigenvector/PageRank
+
+3. **Identificare comunità e strutture**
+   - Community detection, reti bipartite, proiezioni
+
+4. **Usare gli strumenti professionali**
+   - R/igraph per analisi, Gephi per visualizzazione
+
+5. **Applicare SNA a casi OSINT reali**
+   - Dati Twitter, comportamenti coordinati
+:::
+
+## Struttura del Modulo {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+### 📍 Lezione 1 — In presenza
+*9 Gennaio 2026, 14:00-19:00 (5 ore)*
+
+| Blocco | Durata | Contenuto |
+|--------|--------|-----------|
+| 1 | 75 min | Rappresentazioni |
+| 2 | 75 min | Centralità |
+| 3 | 90 min | Laboratorio |
+:::
+
+::: {.column width="50%"}
+### 💻 Lezione 2 — Online
+*16 Gennaio 2026, 14:00-19:00 (5 ore)*
+
+- Monitoraggio reti sociali
+- API per la raccolta dati
+- Visualizzazione grafica delle reti informative
+:::
+::::
+
+## Strumenti Necessari
+
+| Strumento | Descrizione | Link |
+|-----------|-------------|------|
+| **R** | Ambiente di programmazione | [cran.r-project.org](https://cran.r-project.org) |
+| **RStudio** | IDE per R | [posit.co](https://posit.co/download/rstudio-desktop/) |
+| **Posit Cloud** | RStudio nel browser (alternativa) | [posit.cloud](https://posit.cloud/) |
+| **Pacchetti R** | igraph, ggraph, tidyverse | Vedi slide successiva |
+| **Gephi** | Visualizzazione interattiva | [gephi.org](https://gephi.org) |
+
+::: {.callout-note}
+Tutti gli strumenti sono **gratuiti e open source**.
+:::
+
+## Setup 1/4: Installare R
+
+1. Vai su [cran.r-project.org](https://cran.r-project.org)
+2. Seleziona il tuo sistema operativo
+3. Scarica e installa (versione 4.3+)
+
+:::: {.columns}
+::: {.column width="50%"}
+### Windows
+- Clicca "base"
+- Download R x.x.x
+- Esegui installer
+:::
+
+::: {.column width="50%"}
+### macOS
+- Scegli versione per tuo chip:
+  - Apple Silicon (M1/M2/M3): `arm64`
+  - Intel: `x86_64`
+:::
+::::
+
+**Verifica**: apri R e digita `version$version.string`
+
+## Setup 2/4: Installare RStudio
+
+1. Vai su [posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/)
+2. Scarica RStudio Desktop (Free)
+3. Installa
+
+::: {.callout-important}
+## Ordine importante
+Installa **prima R**, poi RStudio. RStudio non funziona senza R!
+:::
+
+## Alternativa: Posit Cloud
+
+Se preferisci **non installare software** sul tuo computer:
+
+1. Vai su [posit.cloud](https://posit.cloud/) e clicca **Sign Up**
+2. Registrati con email o account Google/GitHub
+3. Dalla dashboard, clicca **New Project** → **New RStudio Project**
+4. Attendi il caricamento (circa 30 secondi)
+5. Installa i pacchetti nella Console (vedi slide successiva)
+
+::: {.callout-tip}
+## Piano gratuito
+25 ore/mese di utilizzo, sufficienti per il corso.
+:::
+
+## Setup 3/4: Pacchetti R
+
+Apri RStudio e incolla nella Console:
+
+```r
+# Pacchetti per il corso SNA
+install.packages(c(
+  "igraph",      # analisi reti
+  "ggraph",      # visualizzazione
+  "tidyverse",   # manipolazione dati
+  "readr",       # import CSV
+  "corrplot",    # matrici correlazione
+  "ggpubr"       # grafici
+))
+```
+
+**Verifica**:
+```r
+library(igraph)
+library(ggraph)
+# Se non ci sono errori, tutto OK!
+```
+
+## Setup 4/4: Gephi
+
+1. Vai su [gephi.org](https://gephi.org)
+2. Clicca "Download Free"
+3. Scegli versione per tuo OS
+4. Installa (richiede Java 11+)
+
+::: {.callout-warning}
+## Java richiesto
+Se Gephi non si avvia, installa Java da [adoptium.net](https://adoptium.net)
+:::
+
+**Verifica**: apri Gephi e crea un nuovo progetto
+
+## Checklist di Verifica
+
+Esegui in RStudio:
+
+```r
+# Test rapido
+library(igraph)
+library(ggraph)
+library(tidyverse)
+g <- make_ring(5)
+plot(g)
+cat("Setup completato con successo!")
+```
+
+::: {.callout-tip}
+## Script completo
+Scarica ed esegui `scripts/setup_verifica.R` dal repository
+:::
+
+## Materiale Didattico
+
+### 📚 Libro di riferimento
+
+**The Atlas for the Aspiring Network Scientist**  
+Michele Coscia, 2nd edition 2025  
+[networkatlas.eu](https://networkatlas.eu) — Gratuito online!
+
+### Capitoli consigliati
+
+| Lezione | Capitoli |
+|---------|----------|
+| Lezione 1 | Parte III (cap. 7-9), Parte IV (cap. 13-15) |
+| Lezione 2 | Parte V (cap. 16-20), Parte II (cap. 6) |
+
+## Materiali per il Laboratorio
+
+### Download
+
+[github.com/fabiogiglietto/sna-luiss-2026](https://github.com/fabiogiglietto/sna-luiss-2026)
+
+### Contenuto
+
+| File | Descrizione |
+|------|-------------|
+| `stormofswords.csv` | Dataset Game of Thrones |
+| `lab_sna_lezione1.R` | Script laboratorio |
+| `setup_verifica.R` | Verifica installazione |
+| `lezione2.RData` | Dati Twitter |
+
+## Pronti per Iniziare! {.center}
+
+:::: {.columns}
+::: {.column width="33%"}
+### ✅ Checklist
+- R + RStudio
+- Pacchetti R
+- Gephi
+- Materiali scaricati
+:::
+
+::: {.column width="33%"}
+### 📚 Risorse
+- networkatlas.eu
+- igraph.org/r
+- gephi.org
+:::
+
+::: {.column width="33%"}
+### 📅 Prossima lezione
+9 Gennaio 2026  
+14:00 - 19:00  
+**Porta il laptop!**
+:::
+::::
+
+---
+
+**Prof. Fabio Giglietto**  
+📧 fabio.giglietto@uniurb.it

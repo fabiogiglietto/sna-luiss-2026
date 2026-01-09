@@ -1,0 +1,294 @@
+---
+title: "Rappresentazioni dei Grafi"
+subtitle: "Blocco 1 — Lezione 1"
+author: "Prof. Fabio Giglietto"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Blocco 1: Rappresentazioni"
+    transition: slide
+    highlight-style: github
+    code-fold: false
+---
+
+## Cos'è una Rete?
+
+Una **rete** (o **grafo**) è una struttura matematica che rappresenta **relazioni** tra **entità**.
+
+:::: {.columns}
+::: {.column width="50%"}
+### Componenti base
+- **Nodi** (vertices): le entità
+- **Archi** (edges): le relazioni
+:::
+
+::: {.column width="50%"}
+### Esempi
+- Social network: persone + amicizie
+- Web: pagine + link
+- Twitter: utenti + retweet
+:::
+::::
+
+::: {.callout-note}
+## Notazione
+Grafo $G = (V, E)$ dove $V$ = insieme nodi, $E$ = insieme archi
+:::
+
+## Perché Studiare le Reti?
+
+> "Non importa solo **chi sei**, ma **chi conosci** e **come sei connesso**."
+
+### Applicazioni OSINT
+
+- **Disinformazione**: identificare account coordinati
+- **Intelligence**: mappare organizzazioni
+- **Cybercrime**: tracciare infrastrutture criminali
+- **Terrorismo**: ricostruire celle operative
+
+## Tipi di Grafi
+
+### Per direzione degli archi
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Non diretto
+- Relazione simmetrica
+- "A conosce B" = "B conosce A"
+- Esempio: co-autori
+:::
+
+::: {.column width="50%"}
+#### Diretto
+- Relazione asimmetrica
+- "A segue B" ≠ "B segue A"
+- Esempio: Twitter follow
+:::
+::::
+
+### Per pesi
+
+- **Non pesato**: archi = 0/1 (esiste o no)
+- **Pesato**: archi hanno un valore (frequenza, intensità)
+
+## Rappresentazioni: Matrice di Adiacenza
+
+Una matrice $n \times n$ dove $A_{ij} = 1$ se esiste arco da $i$ a $j$
+
+```
+    A  B  C  D
+A [ 0  1  1  0 ]
+B [ 1  0  1  1 ]
+C [ 1  1  0  0 ]
+D [ 0  1  0  0 ]
+```
+
+::: {.callout-tip}
+## Proprietà
+- Grafo non diretto → matrice **simmetrica**
+- Diagonale = **self-loops** (solitamente 0)
+:::
+
+## Rappresentazioni: Edge List
+
+Lista di coppie (sorgente, destinazione):
+
+```
+Source, Target, Weight
+A, B, 1
+A, C, 1
+B, C, 1
+B, D, 1
+```
+
+::: {.callout-note}
+## Formato più comune
+I file CSV con edge list sono il modo più semplice per importare reti in R e Gephi.
+:::
+
+## Rappresentazioni: Adjacency List
+
+Per ogni nodo, lista dei suoi vicini:
+
+```
+A: [B, C]
+B: [A, C, D]
+C: [A, B]
+D: [B]
+```
+
+### Confronto
+
+| Rappresentazione | Pro | Contro |
+|------------------|-----|--------|
+| Matrice | Accesso O(1) | Memoria O(n²) |
+| Edge List | Compatta | Ricerca lenta |
+| Adjacency List | Efficiente | Più complessa |
+
+## Proprietà di Base: Ordine e Dimensione
+
+:::: {.columns}
+::: {.column width="50%"}
+### Ordine
+Numero di **nodi**
+
+$$n = |V|$$
+
+```r
+vcount(g)
+```
+:::
+
+::: {.column width="50%"}
+### Dimensione
+Numero di **archi**
+
+$$m = |E|$$
+
+```r
+ecount(g)
+```
+:::
+::::
+
+## Proprietà di Base: Densità
+
+Rapporto tra archi esistenti e archi possibili:
+
+$$\text{density} = \frac{m}{n(n-1)/2}$$
+
+(per grafi non diretti)
+
+```r
+graph.density(g)
+```
+
+::: {.callout-note}
+## Interpretazione
+- **Densità alta** (>0.5): rete densa, molte connessioni
+- **Densità bassa** (<0.1): rete sparsa, tipica dei social network
+:::
+
+## Proprietà di Base: Grado (Degree)
+
+Il **grado** di un nodo = numero di archi incidenti
+
+```r
+degree(g)           # tutti i nodi
+degree(g, v="Jon")  # nodo specifico
+```
+
+### Per grafi diretti
+
+- **In-degree**: archi entranti (chi ti menziona)
+- **Out-degree**: archi uscenti (chi menzioni)
+
+```r
+degree(g, mode="in")
+degree(g, mode="out")
+```
+
+## Distribuzione del Grado
+
+La **distribuzione del grado** mostra quanti nodi hanno ciascun valore di degree.
+
+```r
+degree_distribution(g)
+hist(degree(g), main="Degree Distribution")
+```
+
+::: {.callout-important}
+## Power Law
+Molte reti reali seguono una distribuzione **power law**: pochi nodi con molte connessioni, molti nodi con poche.
+:::
+
+## Cammini e Distanze
+
+- **Cammino** (path): sequenza di nodi connessi da archi
+- **Distanza**: lunghezza del cammino più breve
+- **Diametro**: distanza massima tra due nodi qualsiasi
+
+```r
+distances(g)                    # matrice distanze
+diameter(g)                     # diametro
+shortest_paths(g, from="A", to="D")
+```
+
+## Componenti Connesse
+
+Una **componente connessa** è un sottografo in cui ogni nodo è raggiungibile da ogni altro.
+
+```r
+components(g)
+is.connected(g)
+```
+
+::: {.callout-note}
+## Giant Component
+Nelle reti reali, spesso c'è una **componente gigante** che contiene la maggior parte dei nodi.
+:::
+
+## Esempio: Storm of Swords {.smaller}
+
+Rete di co-occorrenza dei personaggi in "A Storm of Swords" (Game of Thrones, libro 3)
+
+```r
+library(igraph)
+library(readr)
+
+edges <- read_csv("data/stormofswords.csv")
+g <- graph.data.frame(edges, directed = FALSE)
+
+# Proprietà base
+vcount(g)           # 107 personaggi
+ecount(g)           # 352 interazioni
+graph.density(g)    # 6.2% densità
+components(g)$no    # 1 componente (tutti connessi)
+```
+
+## Visualizzazione Base
+
+```r
+library(ggraph)
+
+ggraph(g, layout = "fr") +
+  geom_edge_link(alpha = 0.3) +
+  geom_node_point(size = 3) +
+  theme_graph()
+```
+
+### Layout comuni
+
+| Layout | Funzione | Uso |
+|--------|----------|-----|
+| Fruchterman-Reingold | `"fr"` | Reti generiche |
+| Kamada-Kawai | `"kk"` | Reti piccole |
+| Circle | `"circle"` | Confronti |
+| Nicely | `"nicely"` | Automatico |
+
+## Riepilogo Blocco 1
+
+### Concetti chiave
+
+- Grafi: nodi + archi
+- Tipi: diretto/non diretto, pesato/non pesato
+- Rappresentazioni: matrice, edge list, adjacency list
+
+### Metriche base
+
+| Metrica | Funzione R |
+|---------|------------|
+| Nodi | `vcount(g)` |
+| Archi | `ecount(g)` |
+| Densità | `graph.density(g)` |
+| Grado | `degree(g)` |
+| Distanze | `distances(g)` |
+| Componenti | `components(g)` |
+
+## Domande? {.center}
+
+Prossimo blocco: **Centralità**
+
+Come identificare i nodi più importanti?
