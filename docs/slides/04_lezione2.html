@@ -795,16 +795,16 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 </section>
 <section id="coortweet-il-pacchetto-r" class="slide level2">
 <h2>coortweet: Il Pacchetto R</h2>
-<p><a href="https://github.com/nicolarighetti/coortweet">coortweet</a> rileva comportamenti coordinati su Twitter/X.</p>
+<p><a href="https://github.com/nicolarighetti/coortweet">coortweet</a> è un motore di detection <strong>content e platform agnostic</strong> per comportamenti coordinati.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Installazione</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"nicolarighetti/coortweet"</span>)</span>
 <span id="cb17-3"><a href="#cb17-3"></a></span>
 <span id="cb17-4"><a href="#cb17-4"></a><span class="fu">library</span>(coortweet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <h3 id="principio-di-funzionamento">Principio di funzionamento</h3>
 <ol type="1">
-<li>Identifica URL/contenuti condivisi da più utenti</li>
+<li>Identifica contenuti condivisi da più account</li>
 <li>Calcola finestre temporali di condivisione</li>
-<li>Crea rete di co-sharing tra utenti</li>
+<li>Crea rete di co-sharing tra account</li>
 <li>Rileva cluster di account coordinati</li>
 </ol>
 </section>
@@ -812,9 +812,9 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 <h2>coortweet: Esempio</h2>
 <div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(coortweet)</span>
 <span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># Carica dati Twitter (formato accademico API v2)</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># Carica dati social media (qualsiasi piattaforma)</span></span>
 <span id="cb18-4"><a href="#cb18-4"></a>result <span class="ot">&lt;-</span> <span class="fu">detect_coordinated_sharing</span>(</span>
-<span id="cb18-5"><a href="#cb18-5"></a>  <span class="at">data =</span> tweets_df,</span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="at">data =</span> posts_df,</span>
 <span id="cb18-6"><a href="#cb18-6"></a>  <span class="at">time_window =</span> <span class="dv">60</span>,        <span class="co"># secondi</span></span>
 <span id="cb18-7"><a href="#cb18-7"></a>  <span class="at">min_repetition =</span> <span class="dv">2</span>,      <span class="co"># condivisioni minime</span></span>
 <span id="cb18-8"><a href="#cb18-8"></a>  <span class="at">percentile_edge =</span> <span class="fl">0.95</span>   <span class="co"># soglia per archi</span></span>
@@ -822,7 +822,7 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 <span id="cb18-10"><a href="#cb18-10"></a></span>
 <span id="cb18-11"><a href="#cb18-11"></a><span class="co"># Risultati</span></span>
 <span id="cb18-12"><a href="#cb18-12"></a>result<span class="sc">$</span>network        <span class="co"># rete igraph</span></span>
-<span id="cb18-13"><a href="#cb18-13"></a>result<span class="sc">$</span>coordinated    <span class="co"># utenti coordinati</span></span>
+<span id="cb18-13"><a href="#cb18-13"></a>result<span class="sc">$</span>coordinated    <span class="co"># account coordinati</span></span>
 <span id="cb18-14"><a href="#cb18-14"></a>result<span class="sc">$</span>highly_coord   <span class="co"># cluster principali</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="coortweet-visualizzazione" class="slide level2">
@@ -924,7 +924,7 @@ Alto <strong>out-degree</strong> = amplificatore/bot?</p>
 <tbody>
 <tr class="odd">
 <td><a href="https://github.com/nicolarighetti/coortweet">coortweet</a></td>
-<td>Detection coordinamento su Twitter/X</td>
+<td>Detection platform agnostic</td>
 </tr>
 </tbody>
 </table>

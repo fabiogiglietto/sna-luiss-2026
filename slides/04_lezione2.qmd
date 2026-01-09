@@ -350,7 +350,7 @@ Identificare comportamenti coordinati può rivelare:
 
 ## coortweet: Il Pacchetto R
 
-[coortweet](https://github.com/nicolarighetti/coortweet) rileva comportamenti coordinati su Twitter/X.
+[coortweet](https://github.com/nicolarighetti/coortweet) è un motore di detection **content e platform agnostic** per comportamenti coordinati.
 
 ```r
 # Installazione
@@ -361,9 +361,9 @@ library(coortweet)
 
 ### Principio di funzionamento
 
-1. Identifica URL/contenuti condivisi da più utenti
+1. Identifica contenuti condivisi da più account
 2. Calcola finestre temporali di condivisione
-3. Crea rete di co-sharing tra utenti
+3. Crea rete di co-sharing tra account
 4. Rileva cluster di account coordinati
 
 ## coortweet: Esempio {.smaller}
@@ -371,9 +371,9 @@ library(coortweet)
 ```r
 library(coortweet)
 
-# Carica dati Twitter (formato accademico API v2)
+# Carica dati social media (qualsiasi piattaforma)
 result <- detect_coordinated_sharing(
-  data = tweets_df,
+  data = posts_df,
   time_window = 60,        # secondi
   min_repetition = 2,      # condivisioni minime
   percentile_edge = 0.95   # soglia per archi
@@ -381,7 +381,7 @@ result <- detect_coordinated_sharing(
 
 # Risultati
 result$network        # rete igraph
-result$coordinated    # utenti coordinati
+result$coordinated    # account coordinati
 result$highly_coord   # cluster principali
 ```
 
@@ -439,7 +439,7 @@ Account nello stesso cluster hanno condiviso gli stessi contenuti entro la fines
 
 | Strumento | Descrizione |
 |-----------|-------------|
-| [coortweet](https://github.com/nicolarighetti/coortweet) | Detection coordinamento su Twitter/X |
+| [coortweet](https://github.com/nicolarighetti/coortweet) | Detection platform agnostic |
 
 ## Esercizi Consigliati {.smaller}
 
