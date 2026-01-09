@@ -41,6 +41,24 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 
 ## 🛠️ Setup
 
+### Opzione A: Posit Cloud (consigliata per principianti)
+
+Se preferisci non installare software sul tuo computer, puoi usare [Posit Cloud](https://posit.cloud/), un ambiente RStudio completo accessibile dal browser.
+
+**Come iniziare:**
+
+1. Vai su [posit.cloud](https://posit.cloud/) e clicca **Sign Up**
+2. Registrati con email o account Google/GitHub
+3. Dalla dashboard, clicca **New Project** → **New RStudio Project**
+4. Attendi il caricamento dell'ambiente (circa 30 secondi)
+5. Installa i pacchetti necessari nella Console (vedi punto 3 sotto)
+
+> **Nota:** Il piano gratuito offre 25 ore/mese di utilizzo, sufficienti per il corso.
+
+---
+
+### Opzione B: Installazione locale
+
 ### 1. Installa R
 Scarica da [cran.r-project.org](https://cran.r-project.org) (versione 4.3+)
 
