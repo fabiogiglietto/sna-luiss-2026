@@ -30,13 +30,12 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 | 2 | 75 min | Centralità: degree, betweenness, closeness, eigenvector |
 | 3 | 90 min | Laboratorio R/igraph + Gephi |
 
-### Lezione 2 — Online (3 ore)
-*Data da definire*
+### Lezione 2 — Online (5 ore)
+*16 Gennaio 2026, 14:00-19:00*
 
-- Dati Twitter: reti di retweet e hashtag
-- Community detection (Louvain, edge betweenness)
-- Reti bipartite e proiezioni
-- Applicazioni OSINT avanzate
+- Monitoraggio reti sociali
+- API per la raccolta dati
+- Visualizzazione grafica delle reti informative
 
 ---
 
