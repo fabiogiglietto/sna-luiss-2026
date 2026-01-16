@@ -236,14 +236,7 @@ Una rete **bipartita** ha due tipi di nodi, con archi solo tra tipi diversi.
 :::
 
 ::: {.column width="50%"}
-```{mermaid}
-graph LR
-    U1((User1)) --- H1["#covid"]
-    U1 --- H2["#vaccine"]
-    U2((User2)) --- H1
-    U3((User3)) --- H2
-    U3 --- H3["#health"]
-```
+![](images/bipartite_example.svg){height="280px"}
 :::
 ::::
 
