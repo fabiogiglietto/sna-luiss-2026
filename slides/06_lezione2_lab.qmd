@@ -29,12 +29,13 @@ In questo laboratorio applicherete la **coordinated sharing detection** a dati r
 
 Analizzerete dati di due reti coordinate italiane:
 
-- **TG24ore** — Network di pagine Facebook coordinate
-- **Mag24** — Network di pagine pro-Salvini
+- **TG24ore** — Network di pagine che imitano testate giornalistiche, diffondono contenuti sensazionalistici e disinformazione su temi come immigrazione, sicurezza e politica
+
+- **Mag24** — Network di pagine a sostegno della destra sovranista italiana, con contenuti populisti, euroscettici e anti-establishment
 
 ::: {.callout-important}
 ## Storia
-Queste reti sono state rilevate per la prima volta durante lo studio sulle **elezioni italiane 2018** e sono ancora attive oggi.
+Queste reti sono state rilevate per la prima volta durante lo studio sulle **elezioni italiane 2018** e sono ancora attive oggi. Rappresentano esempi documentati di **Coordinated Inauthentic Behavior (CIB)**.
 :::
 
 I dati provengono dalla **Meta Content Library** (novembre 2025).
