@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="06_lezione2_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="06_lezione2_lab_files/libs/quarto-html/tabby.min.js"></script>
+<script src="06_lezione2_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="06_lezione2_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="06_lezione2_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="06_lezione2_lab_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="06_lezione2_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.0.37">
+
+  <meta name="author" content="Prof.&nbsp;Fabio Giglietto">
+  <title>Lab: Analisi di Reti Coordinate Italiane</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="06_lezione2_lab_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="06_lezione2_lab_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="06_lezione2_lab_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="06_lezione2_lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="06_lezione2_lab_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="06_lezione2_lab_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="06_lezione2_lab_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title">Lab: Analisi di Reti Coordinate Italiane</h1>
+  <p class="subtitle">Lezione 2 — Online (Parte 3)</p>
+  <p class="author">Prof.&nbsp;Fabio Giglietto</p>
+</section>
+
+<section id="obiettivi-del-lab" class="slide level2">
+<h2>Obiettivi del Lab</h2>
+<p>In questo laboratorio applicherete la <strong>coordinated sharing detection</strong> a dati reali di reti coordinate italiane.</p>
+<h3 id="cosa-imparerete">Cosa imparerete</h3>
+<ol type="1">
+<li>Caricare e preparare dati da Meta Content Library</li>
+<li>Rilevare comportamenti coordinati con CooRTweet</li>
+<li>Analizzare e visualizzare la rete risultante</li>
+<li>Interpretare i risultati nel contesto di investigazioni reali</li>
+</ol>
+</section>
+<section id="il-caso-di-studio" class="slide level2">
+<h2>Il Caso di Studio</h2>
+<h3 id="reti-coordinate-italiane-2018-oggi">Reti Coordinate Italiane (2018-oggi)</h3>
+<p>Analizzerete dati di due reti coordinate italiane:</p>
+<ul>
+<li><p><strong>TG24ore</strong> — Network di pagine che imitano testate giornalistiche, diffondono contenuti sensazionalistici e disinformazione su temi come immigrazione, sicurezza e politica</p></li>
+<li><p><strong>Mag24</strong> — Network di pagine a sostegno della destra sovranista italiana, con contenuti populisti, euroscettici e anti-establishment</p></li>
+</ul>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Storia</strong></p>
+</div>
+<div class="callout-content">
+<p>Queste reti sono state rilevate per la prima volta durante lo studio sulle <strong>elezioni italiane 2018</strong> e sono ancora attive oggi. Rappresentano esempi documentati di <strong>Coordinated Inauthentic Behavior (CIB)</strong>.</p>
+</div>
+</div>
+</div>
+<p>I dati provengono dalla <strong>Meta Content Library</strong> (novembre 2025).</p>
+</section>
+<section id="documentazione-disponibile" class="slide level2">
+<h2>Documentazione Disponibile</h2>
+<p>Per contestualizzare l’analisi, avete accesso ai report delle investigazioni:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Report</th>
+<th>Contenuto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>TG24ore_investigation.pdf</code></td>
+<td>Investigazione rete TG24ore</td>
+</tr>
+<tr class="even">
+<td><code>Mag24.es_investigation_2021.pdf</code></td>
+<td>Investigazione rete Mag24</td>
+</tr>
+<tr class="odd">
+<td><code>From_SNA_to_CIB_context.pdf</code></td>
+<td>Background metodologico (2018)</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Consiglio</strong></p>
+</div>
+<div class="callout-content">
+<p>Consultate i report <strong>durante</strong> l’analisi per confrontare i vostri risultati con le investigazioni precedenti.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="insights-dai-report" class="slide level2 smaller">
+<h2>Insights dai Report</h2>
+<h3 id="tg24ore-network">TG24ore Network</h3>
+<ul>
+<li><strong>10 pagine Facebook</strong> con ~2 milioni di follower totali</li>
+<li><strong>226 milioni di views</strong> e 16 milioni di click (2017-2019)</li>
+<li>Strategia di <strong>domain switching</strong>: 9 domini usati dal 2017 (tg24-ore.com, tg-news24.com, curiosity-online.com…)</li>
+<li><strong>35 notizie</strong> classificate false/fuorvianti dai fact-checker italiani</li>
+<li>Temi principali: immigrazione, attacchi alla sinistra, contenuti pro-destra sovranista</li>
+<li>Evoluzione: da pagine di meme (2010-2016) a network di disinformazione politica (2017+)</li>
+<li>Attività intensificata durante <strong>elezioni 2018/2019</strong> e <strong>COVID-19</strong></li>
+</ul>
+<h3 id="mag24-network">Mag24 Network</h3>
+<ul>
+<li><strong>7 pagine Facebook</strong> con ~540.000 follower totali</li>
+<li>Dominio registrato a <strong>Francesco Soro</strong> (ex consigliere Lega a Novi Ligure)</li>
+<li>Storia dal 2014 con grandecocomero.com, poi mag24.es</li>
+<li>Amministratori localizzati in <strong>Spagna e Italia</strong></li>
+<li>Contenuti: propaganda sovranista, euroscetticismo, anti-establishment</li>
+<li>Caso raro di <strong>collegamento diretto</strong> tra network e partito politico</li>
+</ul>
+</section>
+<section id="organizzazione-del-lab" class="slide level2 smaller">
+<h2>Organizzazione del Lab</h2>
+<h3 id="lavoro-in-gruppi-4-5-studenti">Lavoro in Gruppi (4-5 studenti)</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Gruppi dispari (1, 3, 5…) — TG24ore</strong></p>
+<ul>
+<li>Dataset: <code>tg24ore_posts.csv</code></li>
+<li>~29.600 post</li>
+<li>Report: <code>TG24ore_investigation.pdf</code></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Gruppi pari (2, 4, 6…) — Mag24</strong></p>
+<ul>
+<li>Dataset: <code>mag24_posts.csv</code></li>
+<li>~33.500 post</li>
+<li>Report: <code>Mag24.es_investigation_2021.pdf</code></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Suggerimento per i gruppi</strong></p>
+</div>
+<div class="callout-content">
+<p>Dividetevi i ruoli: chi scrive codice, chi consulta il report, chi prende appunti, chi prepara la presentazione finale.</p>
+</div>
+</div>
+</div>
+<h3 id="timeline">Timeline</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Fase</th>
+<th>Durata</th>
+<th>Attività</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Setup</td>
+<td>5 min</td>
+<td>Caricamento librerie e dati</td>
+</tr>
+<tr class="even">
+<td>Task 1-2</td>
+<td>35 min</td>
+<td>Esplorazione e detection</td>
+</tr>
+<tr class="odd">
+<td>Task 3-4</td>
+<td>35 min</td>
+<td>Network e visualizzazione</td>
+</tr>
+<tr class="even">
+<td>Task 5</td>
+<td>15 min</td>
+<td>Interpretazione e confronto</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="setup-ambiente" class="slide level2">
+<h2>Setup Ambiente</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Librerie necessarie</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(CooRTweet)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(CooRTweetPost)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># Imposta working directory (modifica secondo il tuo setup)</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># setwd("~/path/to/sna-luiss-2026")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Posit Cloud</strong></p>
+</div>
+<div class="callout-content">
+<p>Se usate Posit Cloud, le librerie potrebbero richiedere installazione:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"data.table"</span>, <span class="st">"igraph"</span>, <span class="st">"ggraph"</span>, <span class="st">"tidyverse"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"nicolarighetti/CooRTweet"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"massimo-terenzi/CooRTweetPost"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="task-1-caricamento-dati-5-min" class="slide level2">
+<h2>Task 1: Caricamento Dati (5 min)</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># GRUPPO A: TG24ore</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>df <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"data/tg24ore_posts.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># GRUPPO B: Mag24</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co"># df &lt;- fread("data/mag24_posts.csv")</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># Esplora struttura</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="fu">dim</span>(df)</span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">names</span>(df)</span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3 id="colonne-chiave-per-coortweet">Colonne chiave per CooRTweet</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Colonna</th>
+<th>Uso in CooRTweet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>text</code></td>
+<td>object_id (contenuto condiviso)</td>
+</tr>
+<tr class="even">
+<td><code>surface.name</code></td>
+<td>account_id (chi condivide)</td>
+</tr>
+<tr class="odd">
+<td><code>mcl_url</code></td>
+<td>content_id (ID unico post)</td>
+</tr>
+<tr class="even">
+<td><code>creation_time</code></td>
+<td>timestamp_share</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="task-1-esplorazione-dati-10-min" class="slide level2">
+<h2>Task 1: Esplorazione Dati (10 min)</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Statistiche di base</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Totale post:"</span>, <span class="fu">nrow</span>(df)))</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Account unici:"</span>, <span class="fu">uniqueN</span>(df<span class="sc">$</span>surface.name)))</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Testi unici:"</span>, <span class="fu">uniqueN</span>(df<span class="sc">$</span>text)))</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co"># Distribuzione post per account</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>posts_per_account <span class="ot">&lt;-</span> df[, .N, by <span class="ot">=</span> surface.name][<span class="fu">order</span>(<span class="sc">-</span>N)]</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">head</span>(posts_per_account, <span class="dv">10</span>)</span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co"># Account più attivi</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="fu">ggplot</span>(posts_per_account[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>], <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(surface.name, N), <span class="at">y =</span> N)) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Top 20 Account per Numero di Post"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15"></a>       <span class="at">x =</span> <span class="st">"Account"</span>, <span class="at">y =</span> <span class="st">"Numero post"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="task-2-preparazione-dati-10-min" class="slide level2">
+<h2>Task 2: Preparazione Dati (10 min)</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Prepara dati per CooRTweet</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>data_prepared <span class="ot">&lt;-</span> <span class="fu">prep_data</span>(</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="at">x =</span> df,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="at">object_id       =</span> <span class="st">"text"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="at">account_id      =</span> <span class="st">"surface.name"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="at">content_id      =</span> <span class="st">"mcl_url"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="at">timestamp_share =</span> <span class="st">"creation_time"</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co"># Pulizia: rimuovi testi vuoti</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>data_prepared <span class="ot">&lt;-</span> data_prepared[<span class="fu">trimws</span>(object_id) <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Verifica</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Righe preparate:"</span>, <span class="fu">nrow</span>(data_prepared)))</span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Account:"</span>, <span class="fu">uniqueN</span>(data_prepared<span class="sc">$</span>account_id)))</span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Contenuti unici:"</span>, <span class="fu">uniqueN</span>(data_prepared<span class="sc">$</span>object_id)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="task-2-detection-coordinamento-15-min" class="slide level2">
+<h2>Task 2: Detection Coordinamento (15 min)</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Rileva gruppi coordinati</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>coordinated_groups <span class="ot">&lt;-</span> <span class="fu">detect_groups</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">x =</span> data_prepared,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="at">min_participation =</span> <span class="dv">2</span>,    <span class="co"># Almeno 2 contenuti in comune</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">time_window =</span> <span class="dv">60</span>          <span class="co"># Entro 60 secondi</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co"># Esplora risultati</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="fu">print</span>(coordinated_groups)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Cosa significa?</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><code>min_participation = 2</code>: due account sono coordinati se condividono almeno 2 contenuti</li>
+<li><code>time_window = 60</code>: le condivisioni devono avvenire entro 60 secondi l’una dall’altra</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="task-3-generare-network-10-min" class="slide level2">
+<h2>Task 3: Generare Network (10 min)</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Genera network di coordinamento</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>g <span class="ot">&lt;-</span> <span class="fu">generate_coordinated_network</span>(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>  coordinated_groups,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="at">edge_weight =</span> <span class="fl">0.5</span>,   <span class="co"># Mantieni archi sopra la mediana</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="at">subgraph =</span> <span class="dv">1</span>,        <span class="co"># Solo account coordinati</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="at">objects =</span> <span class="cn">FALSE</span>      <span class="co"># Solo account, non contenuti</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>)</span>
+<span id="cb7-8"><a href="#cb7-8"></a></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co"># Statistiche network</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Nodi (account coordinati):"</span>, <span class="fu">vcount</span>(g)))</span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Archi (relazioni):"</span>, <span class="fu">ecount</span>(g)))</span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Componenti connesse:"</span>, <span class="fu">components</span>(g)<span class="sc">$</span>no))</span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Densità:"</span>, <span class="fu">round</span>(<span class="fu">edge_density</span>(g), <span class="dv">4</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="task-3-community-detection-10-min" class="slide level2">
+<h2>Task 3: Community Detection (10 min)</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Rileva comunità con Louvain</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>communities <span class="ot">&lt;-</span> <span class="fu">cluster_louvain</span>(g)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">V</span>(g)<span class="sc">$</span>community <span class="ot">&lt;-</span> <span class="fu">membership</span>(communities)</span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co"># Statistiche comunità</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Numero comunità:"</span>, <span class="fu">max</span>(<span class="fu">V</span>(g)<span class="sc">$</span>community)))</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="fu">print</span>(<span class="st">"Dimensioni comunità:"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="fu">print</span>(<span class="fu">sizes</span>(communities))</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co"># Modularità</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>mod <span class="ot">&lt;-</span> <span class="fu">modularity</span>(communities)</span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Modularità:"</span>, <span class="fu">round</span>(mod, <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Interpretazione</strong></p>
+</div>
+<div class="callout-content">
+<p>Q &gt; 0.3 indica struttura comunitaria significativa. Cosa ottenete?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-3-top-account-per-comunità" class="slide level2">
+<h2>Task 3: Top Account per Comunità</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Calcola centralità</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">V</span>(g)<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">degree</span>(g)</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">V</span>(g)<span class="sc">$</span>strength <span class="ot">&lt;-</span> <span class="fu">strength</span>(g)</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co"># Top account per comunità</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>top_accounts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="at">account =</span> <span class="fu">V</span>(g)<span class="sc">$</span>name,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="at">community =</span> <span class="fu">V</span>(g)<span class="sc">$</span>community,</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="at">degree =</span> <span class="fu">V</span>(g)<span class="sc">$</span>degree,</span>
+<span id="cb9-10"><a href="#cb9-10"></a>  <span class="at">strength =</span> <span class="fu">V</span>(g)<span class="sc">$</span>strength</span>
+<span id="cb9-11"><a href="#cb9-11"></a>)</span>
+<span id="cb9-12"><a href="#cb9-12"></a></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co"># Top 3 per ogni comunità</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>top_per_community <span class="ot">&lt;-</span> top_accounts <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>  <span class="fu">group_by</span>(community) <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>  <span class="fu">slice_max</span>(degree, <span class="at">n =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>  <span class="fu">arrange</span>(community, <span class="fu">desc</span>(degree))</span>
+<span id="cb9-18"><a href="#cb9-18"></a></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="fu">print</span>(top_per_community)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="task-4-visualizzazione-15-min" class="slide level2">
+<h2>Task 4: Visualizzazione (15 min)</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Visualizza network</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>p <span class="ot">&lt;-</span> <span class="fu">ggraph</span>(g, <span class="at">layout =</span> <span class="st">"fr"</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> weight), <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> degree, <span class="at">color =</span> <span class="fu">as.factor</span>(community))) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">geom_node_text</span>(</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(degree <span class="sc">&gt;</span> <span class="fu">quantile</span>(degree, <span class="fl">0.95</span>), name, <span class="st">""</span>)),</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">repel =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>  <span class="fu">theme_graph</span>() <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Network di Coordinamento"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13"></a>       <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Nodi:"</span>, <span class="fu">vcount</span>(g), <span class="st">"| Comunità:"</span>, <span class="fu">max</span>(<span class="fu">V</span>(g)<span class="sc">$</span>community)),</span>
+<span id="cb10-14"><a href="#cb10-14"></a>       <span class="at">color =</span> <span class="st">"Comunità"</span>, <span class="at">size =</span> <span class="st">"Degree"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15"></a></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="task-4-export-opzionale" class="slide level2">
+<h2>Task 4: Export (opzionale)</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Crea cartella output</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">dir.create</span>(<span class="st">"output"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># Salva visualizzazione</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">ggsave</span>(<span class="st">"output/network_coordinato.png"</span>, p, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">10</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co"># Esporta per Gephi</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="fu">write_graph</span>(g, <span class="st">"output/network_coordinato.graphml"</span>, <span class="at">format =</span> <span class="st">"graphml"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9"></a></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co"># Esporta lista account</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="fu">write_csv</span>(top_accounts, <span class="st">"output/account_coordinati.csv"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12"></a></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co"># Post-processing con CooRTweetPost</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="fu">export_all_results</span>(</span>
+<span id="cb11-15"><a href="#cb11-15"></a>  <span class="at">coordinated_groups =</span> coordinated_groups,</span>
+<span id="cb11-16"><a href="#cb11-16"></a>  <span class="at">network_graph =</span> g,</span>
+<span id="cb11-17"><a href="#cb11-17"></a>  <span class="at">output_dir =</span> <span class="st">"output/coortweet_results"</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="task-5-interpretazione" class="slide level2 smaller">
+<h2>Task 5: Interpretazione</h2>
+<h3 id="domande-guida">Domande Guida</h3>
+<p>Confrontate i vostri risultati con i report di investigazione:</p>
+<ol type="1">
+<li><p><strong>Quante comunità</strong> avete identificato? Corrispondono ai gruppi descritti nel report?</p></li>
+<li><p><strong>Chi sono gli account più centrali</strong> (alto degree)? Li riconoscete dal report?</p></li>
+<li><p><strong>Qual è la modularità</strong>? La rete ha una struttura comunitaria chiara?</p></li>
+<li><p><strong>Che tipo di contenuti</strong> vengono condivisi? (guardate <code>object_id</code> nei dati originali)</p></li>
+<li><p><strong>I vostri risultati confermano</strong> le conclusioni dell’investigazione?</p></li>
+</ol>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Ricordate</strong></p>
+</div>
+<div class="callout-content">
+<p>Coordinamento ≠ Inauthenticità automatica. Servono sempre verifiche aggiuntive!</p>
+</div>
+</div>
+</div>
+</section>
+<section id="confronto-tra-gruppi" class="slide level2">
+<h2>Confronto tra Gruppi</h2>
+<h3 id="presentate-i-vostri-risultati-5-min-per-gruppo">Presentate i vostri risultati (5 min per gruppo)</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Metrica</th>
+<th>Gruppo A (TG24ore)</th>
+<th>Gruppo B (Mag24)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Account coordinati</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td>Comunità</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="odd">
+<td>Modularità</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td>Top 3 account</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<h3 id="discussione">Discussione</h3>
+<ul>
+<li>Quali <strong>somiglianze</strong> tra le due reti?</li>
+<li>Quali <strong>differenze</strong>?</li>
+<li>Cosa suggeriscono questi pattern?</li>
+</ul>
+</section>
+<section id="sfida-bonus" class="slide level2">
+<h2>Sfida Bonus</h2>
+<h3 id="esplorate-leffetto-dei-parametri">Esplorate l’effetto dei parametri</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Prova con time_window diversi</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>coord_120 <span class="ot">&lt;-</span> <span class="fu">detect_groups</span>(data_prepared, <span class="at">min_participation =</span> <span class="dv">2</span>, <span class="at">time_window =</span> <span class="dv">120</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>coord_300 <span class="ot">&lt;-</span> <span class="fu">detect_groups</span>(data_prepared, <span class="at">min_participation =</span> <span class="dv">2</span>, <span class="at">time_window =</span> <span class="dv">300</span>)</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="co"># Confronta i risultati</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="co"># Come cambia il numero di account coordinati?</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co"># Come cambia la struttura del network?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3 id="domande">Domande</h3>
+<ul>
+<li>Con <code>time_window = 120</code> trovate più o meno coordinamento?</li>
+<li>Quale valore è più “realistico” per rilevare bot vs umani coordinati?</li>
+</ul>
+</section>
+<section id="riepilogo" class="slide level2">
+<h2>Riepilogo</h2>
+<h3 id="cosa-avete-imparato">Cosa avete imparato</h3>
+<ol type="1">
+<li><strong>Preparare dati</strong> da Meta Content Library per CooRTweet</li>
+<li><strong>Rilevare coordinamento</strong> con <code>detect_groups()</code></li>
+<li><strong>Generare network</strong> di co-sharing</li>
+<li><strong>Identificare comunità</strong> con Louvain</li>
+<li><strong>Interpretare risultati</strong> nel contesto di investigazioni reali</li>
+</ol>
+<h3 id="il-workflow-completo">Il workflow completo</h3>
+<pre><code>Dati MCL → prep_data() → detect_groups() → generate_network() → cluster_louvain() → Interpretazione</code></pre>
+</section>
+<section id="risorse" class="slide level2">
+<h2>Risorse</h2>
+<h3 id="script-completo">Script completo</h3>
+<ul>
+<li><code>scripts/lab_sna_lezione3_gruppi.R</code> — Codice guidato per questo lab</li>
+</ul>
+<h3 id="report-investigazioni">Report investigazioni</h3>
+<ul>
+<li><a href="../reports/TG24ore_investigation.pdf">TG24ore Investigation</a></li>
+<li><a href="../reports/Mag24.es_investigation_2021.pdf">Mag24 Investigation</a></li>
+<li><a href="../reports/From_SNA_to_CIB_context.pdf">Background 2018</a></li>
+</ul>
+<h3 id="strumenti">Strumenti</h3>
+<ul>
+<li><a href="https://github.com/nicolarighetti/CooRTweet">CooRTweet</a></li>
+<li><a href="https://github.com/massimo-terenzi/CooRTweetPost">CooRTweetPost</a></li>
+</ul>
+</section>
+<section id="domande-1" class="slide level2 center">
+<h2>Domande?</h2>
+<p><strong>Prof.&nbsp;Fabio Giglietto</strong> fabio.giglietto@uniurb.it</p>
+<div class="footer footer-default">
+<p>SNA — Lab Coordinated Networks</p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="06_lezione2_lab_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="06_lezione2_lab_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          let href = ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>
