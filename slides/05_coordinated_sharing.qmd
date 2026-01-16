@@ -264,15 +264,18 @@ I concetti di reti bipartite, proiezioni e community detection non sono astratti
 
 ## Risorse {.center}
 
+### Lab script
+
+- `scripts/lab_sna_lezione3.R` — Codice completo per questo lab
+
 ### Paper di riferimento
 
 - Giglietto, Righetti, Rossi, Marino (2020) - [It takes a village to manipulate the media](https://doi.org/10.1177/0894439320921898)
 
 ### Strumenti
 
-- [coortweet](https://github.com/nicolarighetti/coortweet) - Detection engine
+- [CooRTweet](https://github.com/nicolarighetti/CooRTweet) - Detection engine
 - [CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost) - Post-processing
-- [CooRnet](https://github.com/fabiogiglietto/CooRnet) - Versione originale
 
 ## Domande? {.center}
 
