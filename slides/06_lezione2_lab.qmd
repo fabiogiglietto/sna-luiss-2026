@@ -1,0 +1,399 @@
+---
+title: "Lab: Analisi di Reti Coordinate Italiane"
+subtitle: "Lezione 2 — Online (Parte 3)"
+author: "Prof. Fabio Giglietto"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Lab Coordinated Networks"
+    transition: slide
+    highlight-style: github
+---
+
+## Obiettivi del Lab
+
+In questo laboratorio applicherete la **coordinated sharing detection** a dati reali di reti coordinate italiane.
+
+### Cosa imparerete
+
+1. Caricare e preparare dati da Meta Content Library
+2. Rilevare comportamenti coordinati con CooRTweet
+3. Analizzare e visualizzare la rete risultante
+4. Interpretare i risultati nel contesto di investigazioni reali
+
+## Il Caso di Studio
+
+### Reti Coordinate Italiane (2018-oggi)
+
+Analizzerete dati di due reti coordinate italiane:
+
+- **TG24ore** — Network di pagine Facebook coordinate
+- **Mag24** — Network di pagine pro-Salvini
+
+::: {.callout-important}
+## Storia
+Queste reti sono state rilevate per la prima volta durante lo studio sulle **elezioni italiane 2018** e sono ancora attive oggi.
+:::
+
+I dati provengono dalla **Meta Content Library** (novembre 2025).
+
+## Documentazione Disponibile
+
+Per contestualizzare l'analisi, avete accesso ai report delle investigazioni:
+
+| Report | Contenuto |
+|--------|-----------|
+| `TG24ore_investigation.pdf` | Investigazione rete TG24ore |
+| `Mag24.es_investigation_2021.pdf` | Investigazione rete Mag24 |
+| `From_SNA_to_CIB_context.pdf` | Background metodologico (2018) |
+
+::: {.callout-tip}
+## Consiglio
+Consultate i report **durante** l'analisi per confrontare i vostri risultati con le investigazioni precedenti.
+:::
+
+## Organizzazione del Lab {.smaller}
+
+### Lavoro in Gruppi (2-3 studenti)
+
+:::: {.columns}
+::: {.column width="50%"}
+**Gruppo A — TG24ore**
+
+- Dataset: `tg24ore_posts.csv`
+- ~29.600 post
+- Report: `TG24ore_investigation.pdf`
+:::
+
+::: {.column width="50%"}
+**Gruppo B — Mag24**
+
+- Dataset: `mag24_posts.csv`
+- ~33.500 post
+- Report: `Mag24.es_investigation_2021.pdf`
+:::
+::::
+
+### Timeline
+
+| Fase | Durata | Attività |
+|------|--------|----------|
+| Setup | 5 min | Caricamento librerie e dati |
+| Task 1-2 | 35 min | Esplorazione e detection |
+| Task 3-4 | 35 min | Network e visualizzazione |
+| Task 5 | 15 min | Interpretazione e confronto |
+
+## Setup Ambiente
+
+```r
+# Librerie necessarie
+library(data.table)
+library(CooRTweet)
+library(CooRTweetPost)
+library(igraph)
+library(ggraph)
+library(tidyverse)
+
+# Imposta working directory (modifica secondo il tuo setup)
+# setwd("~/path/to/sna-luiss-2026")
+```
+
+::: {.callout-note}
+## Posit Cloud
+Se usate Posit Cloud, le librerie potrebbero richiedere installazione:
+```r
+install.packages(c("data.table", "igraph", "ggraph", "tidyverse"))
+devtools::install_github("nicolarighetti/CooRTweet")
+devtools::install_github("massimo-terenzi/CooRTweetPost")
+```
+:::
+
+## Task 1: Caricamento Dati (5 min)
+
+```r
+# GRUPPO A: TG24ore
+df <- fread("data/tg24ore_posts.csv")
+
+# GRUPPO B: Mag24
+# df <- fread("data/mag24_posts.csv")
+
+# Esplora struttura
+dim(df)
+names(df)
+head(df)
+```
+
+### Colonne chiave per CooRTweet
+
+| Colonna | Uso in CooRTweet |
+|---------|------------------|
+| `text` | object_id (contenuto condiviso) |
+| `surface.name` | account_id (chi condivide) |
+| `mcl_url` | content_id (ID unico post) |
+| `creation_time` | timestamp_share |
+
+## Task 1: Esplorazione Dati (10 min)
+
+```r
+# Statistiche di base
+print(paste("Totale post:", nrow(df)))
+print(paste("Account unici:", uniqueN(df$surface.name)))
+print(paste("Testi unici:", uniqueN(df$text)))
+
+# Distribuzione post per account
+posts_per_account <- df[, .N, by = surface.name][order(-N)]
+head(posts_per_account, 10)
+
+# Account più attivi
+ggplot(posts_per_account[1:20], aes(x = reorder(surface.name, N), y = N)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 20 Account per Numero di Post",
+       x = "Account", y = "Numero post")
+```
+
+## Task 2: Preparazione Dati (10 min)
+
+```r
+# Prepara dati per CooRTweet
+data_prepared <- prep_data(
+  x = df,
+  object_id       = "text",
+  account_id      = "surface.name",
+  content_id      = "mcl_url",
+  timestamp_share = "creation_time"
+)
+
+# Pulizia: rimuovi testi vuoti
+data_prepared <- data_prepared[trimws(object_id) != ""]
+
+# Verifica
+print(paste("Righe preparate:", nrow(data_prepared)))
+print(paste("Account:", uniqueN(data_prepared$account_id)))
+print(paste("Contenuti unici:", uniqueN(data_prepared$object_id)))
+```
+
+## Task 2: Detection Coordinamento (15 min)
+
+```r
+# Rileva gruppi coordinati
+coordinated_groups <- detect_groups(
+  x = data_prepared,
+  min_participation = 2,    # Almeno 2 contenuti in comune
+  time_window = 60          # Entro 60 secondi
+)
+
+# Esplora risultati
+print(coordinated_groups)
+```
+
+::: {.callout-note}
+## Cosa significa?
+- `min_participation = 2`: due account sono coordinati se condividono almeno 2 contenuti
+- `time_window = 60`: le condivisioni devono avvenire entro 60 secondi l'una dall'altra
+:::
+
+## Task 3: Generare Network (10 min)
+
+```r
+# Genera network di coordinamento
+g <- generate_coordinated_network(
+  coordinated_groups,
+  edge_weight = 0.5,   # Mantieni archi sopra la mediana
+  subgraph = 1,        # Solo account coordinati
+  objects = FALSE      # Solo account, non contenuti
+)
+
+# Statistiche network
+print(paste("Nodi (account coordinati):", vcount(g)))
+print(paste("Archi (relazioni):", ecount(g)))
+print(paste("Componenti connesse:", components(g)$no))
+print(paste("Densità:", round(edge_density(g), 4)))
+```
+
+## Task 3: Community Detection (10 min)
+
+```r
+# Rileva comunità con Louvain
+communities <- cluster_louvain(g)
+V(g)$community <- membership(communities)
+
+# Statistiche comunità
+print(paste("Numero comunità:", max(V(g)$community)))
+print("Dimensioni comunità:")
+print(sizes(communities))
+
+# Modularità
+mod <- modularity(communities)
+print(paste("Modularità:", round(mod, 3)))
+```
+
+::: {.callout-tip}
+## Interpretazione
+Q > 0.3 indica struttura comunitaria significativa. Cosa ottenete?
+:::
+
+## Task 3: Top Account per Comunità
+
+```r
+# Calcola centralità
+V(g)$degree <- degree(g)
+V(g)$strength <- strength(g)
+
+# Top account per comunità
+top_accounts <- data.frame(
+  account = V(g)$name,
+  community = V(g)$community,
+  degree = V(g)$degree,
+  strength = V(g)$strength
+)
+
+# Top 3 per ogni comunità
+top_per_community <- top_accounts %>%
+  group_by(community) %>%
+  slice_max(degree, n = 3) %>%
+  arrange(community, desc(degree))
+
+print(top_per_community)
+```
+
+## Task 4: Visualizzazione (15 min)
+
+```r
+# Visualizza network
+p <- ggraph(g, layout = "fr") +
+  geom_edge_link(aes(alpha = weight), color = "gray50") +
+  geom_node_point(aes(size = degree, color = as.factor(community))) +
+  geom_node_text(
+    aes(label = ifelse(degree > quantile(degree, 0.95), name, "")),
+    size = 2.5, repel = TRUE
+  ) +
+  scale_color_brewer(palette = "Set2") +
+  scale_size_continuous(range = c(2, 8)) +
+  theme_graph() +
+  labs(title = "Network di Coordinamento",
+       subtitle = paste("Nodi:", vcount(g), "| Comunità:", max(V(g)$community)),
+       color = "Comunità", size = "Degree")
+
+print(p)
+```
+
+## Task 4: Export (opzionale)
+
+```r
+# Crea cartella output
+dir.create("output", showWarnings = FALSE)
+
+# Salva visualizzazione
+ggsave("output/network_coordinato.png", p, width = 12, height = 10)
+
+# Esporta per Gephi
+write_graph(g, "output/network_coordinato.graphml", format = "graphml")
+
+# Esporta lista account
+write_csv(top_accounts, "output/account_coordinati.csv")
+
+# Post-processing con CooRTweetPost
+export_all_results(
+  coordinated_groups = coordinated_groups,
+  network_graph = g,
+  output_dir = "output/coortweet_results"
+)
+```
+
+## Task 5: Interpretazione {.smaller}
+
+### Domande Guida
+
+Confrontate i vostri risultati con i report di investigazione:
+
+1. **Quante comunità** avete identificato? Corrispondono ai gruppi descritti nel report?
+
+2. **Chi sono gli account più centrali** (alto degree)? Li riconoscete dal report?
+
+3. **Qual è la modularità**? La rete ha una struttura comunitaria chiara?
+
+4. **Che tipo di contenuti** vengono condivisi? (guardate `object_id` nei dati originali)
+
+5. **I vostri risultati confermano** le conclusioni dell'investigazione?
+
+::: {.callout-warning}
+## Ricordate
+Coordinamento ≠ Inauthenticità automatica. Servono sempre verifiche aggiuntive!
+:::
+
+## Confronto tra Gruppi
+
+### Presentate i vostri risultati (5 min per gruppo)
+
+| Metrica | Gruppo A (TG24ore) | Gruppo B (Mag24) |
+|---------|-------------------|------------------|
+| Account coordinati | ? | ? |
+| Comunità | ? | ? |
+| Modularità | ? | ? |
+| Top 3 account | ? | ? |
+
+### Discussione
+
+- Quali **somiglianze** tra le due reti?
+- Quali **differenze**?
+- Cosa suggeriscono questi pattern?
+
+## Sfida Bonus
+
+### Esplorate l'effetto dei parametri
+
+```r
+# Prova con time_window diversi
+coord_120 <- detect_groups(data_prepared, min_participation = 2, time_window = 120)
+coord_300 <- detect_groups(data_prepared, min_participation = 2, time_window = 300)
+
+# Confronta i risultati
+# Come cambia il numero di account coordinati?
+# Come cambia la struttura del network?
+```
+
+### Domande
+
+- Con `time_window = 120` trovate più o meno coordinamento?
+- Quale valore è più "realistico" per rilevare bot vs umani coordinati?
+
+## Riepilogo
+
+### Cosa avete imparato
+
+1. **Preparare dati** da Meta Content Library per CooRTweet
+2. **Rilevare coordinamento** con `detect_groups()`
+3. **Generare network** di co-sharing
+4. **Identificare comunità** con Louvain
+5. **Interpretare risultati** nel contesto di investigazioni reali
+
+### Il workflow completo
+
+```
+Dati MCL → prep_data() → detect_groups() → generate_network() → cluster_louvain() → Interpretazione
+```
+
+## Risorse
+
+### Script completo
+
+- `scripts/lab_sna_lezione3_gruppi.R` — Codice guidato per questo lab
+
+### Report investigazioni
+
+- [TG24ore Investigation](../reports/TG24ore_investigation.pdf)
+- [Mag24 Investigation](../reports/Mag24.es_investigation_2021.pdf)
+- [Background 2018](../reports/From_SNA_to_CIB_context.pdf)
+
+### Strumenti
+
+- [CooRTweet](https://github.com/nicolarighetti/CooRTweet)
+- [CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost)
+
+## Domande? {.center}
+
+**Prof. Fabio Giglietto**
+fabio.giglietto@uniurb.it

@@ -41,6 +41,7 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 | 2 | **Community Detection** — Edge Betweenness, Louvain, modularità, NMI | 04 |
 | 3 | **Reti Bipartite** — Due tipi di nodi, proiezioni | 04 |
 | 4 | **Coordinated Sharing Detection** — [CooRTweet](https://github.com/nicolarighetti/CooRTweet) + [CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost) | 05 |
+| 5 | **Lab: Reti Coordinate Italiane** — Analisi TG24ore e Mag24 (lavoro in gruppi) | 06 |
 
 ---
 
@@ -96,25 +97,28 @@ Esegui `scripts/setup_verifica.R` — se vedi "Setup completato!", sei pronto.
 
 ```
 ├── data/
-│   ├── stormofswords.csv         # Dataset Game of Thrones (Lezione 1)
-│   ├── lezione2.RData            # Dati Twitter (Lezione 2)
-│   ├── tg24ore_posts.csv         # Dati Meta Content Library
-│   └── mag24_posts.csv           # Dati Meta Content Library
+│   ├── stormofswords.csv           # Dataset Game of Thrones (Lezione 1)
+│   ├── lezione2.RData              # Dati Twitter (Lezione 2)
+│   ├── tg24ore_posts.csv           # Dati Meta Content Library (TG24ore)
+│   └── mag24_posts.csv             # Dati Meta Content Library (Mag24)
 ├── scripts/
-│   ├── setup_verifica.R          # Script verifica installazione
-│   ├── lab_sna_lezione1.R        # Lab Lezione 1 (centralità)
-│   ├── lab_sna_lezione2.R        # Lab Lezione 2 (community, bipartite)
-│   └── lab_sna_lezione3.R        # Lab Lezione 3 (coordinated sharing)
+│   ├── setup_verifica.R            # Script verifica installazione
+│   ├── lab_sna_lezione1.R          # Lab Lezione 1 (centralità)
+│   ├── lab_sna_lezione2.R          # Lab Lezione 2 (community, bipartite)
+│   ├── lab_sna_lezione3.R          # Lab coordinated sharing (CooRTweet)
+│   └── lab_sna_lezione3_gruppi.R   # Lab gruppi: reti coordinate italiane
 ├── slides/
-│   ├── 00_presentazione.qmd      # Presentazione corso
-│   ├── 01_rappresentazioni.qmd   # Grafi e proprietà
-│   ├── 02_centralita.qmd         # Metriche di centralità
-│   ├── 03_laboratorio.qmd        # Lab R/igraph
-│   ├── 04_lezione2.qmd           # Community e bipartite
-│   └── 05_coordinated_sharing.qmd # Coordinated sharing detection
+│   ├── 00_presentazione.qmd        # Presentazione corso
+│   ├── 01_rappresentazioni.qmd     # Grafi e proprietà
+│   ├── 02_centralita.qmd           # Metriche di centralità
+│   ├── 03_laboratorio.qmd          # Lab R/igraph
+│   ├── 04_lezione2.qmd             # Community e bipartite
+│   ├── 05_coordinated_sharing.qmd  # Coordinated sharing detection
+│   └── 06_lezione2_lab.qmd         # Lab: Reti coordinate italiane
 └── docs/
-    ├── index.html                # Sito web del corso
-    └── slides/                   # Slide renderizzate (HTML)
+    ├── index.html                  # Sito web del corso
+    ├── slides/                     # Slide renderizzate (HTML)
+    └── reports/                    # Report investigazioni (PDF)
 ```
 
 ---
