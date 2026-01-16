@@ -35,12 +35,12 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 ### Lezione 2 — Online (5 ore)
 *16 Gennaio 2026, 14:00-19:00*
 
-| Blocco | Contenuto |
-|--------|-----------|
-| 1 | **Reti da Social Media Data** — Rete retweet, rete utente-hashtag |
-| 2 | **Community Detection** — Edge Betweenness, Louvain, modularità, NMI |
-| 3 | **Reti Bipartite** — Due tipi di nodi, proiezioni |
-| 4 | **Coordinated Sharing Detection** — [coortweet](https://github.com/nicolarighetti/coortweet) |
+| Blocco | Contenuto | Slide |
+|--------|-----------|-------|
+| 1 | **Reti da Social Media Data** — Rete retweet, rete utente-hashtag | 04 |
+| 2 | **Community Detection** — Edge Betweenness, Louvain, modularità, NMI | 04 |
+| 3 | **Reti Bipartite** — Due tipi di nodi, proiezioni | 04 |
+| 4 | **Coordinated Sharing Detection** — [CooRTweet](https://github.com/nicolarighetti/CooRTweet) + [CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost) | 05 |
 
 ---
 
@@ -96,20 +96,25 @@ Esegui `scripts/setup_verifica.R` — se vedi "Setup completato!", sei pronto.
 
 ```
 ├── data/
-│   ├── stormofswords.csv      # Dataset Game of Thrones (Lezione 1)
-│   └── lezione2.RData         # Dati Twitter (Lezione 2)
+│   ├── stormofswords.csv         # Dataset Game of Thrones (Lezione 1)
+│   ├── lezione2.RData            # Dati Twitter (Lezione 2)
+│   ├── tg24ore_posts.csv         # Dati Meta Content Library
+│   └── mag24_posts.csv           # Dati Meta Content Library
 ├── scripts/
-│   ├── setup_verifica.R       # Script verifica installazione
-│   └── lab_sna_lezione1.R     # Script completo laboratorio
+│   ├── setup_verifica.R          # Script verifica installazione
+│   ├── lab_sna_lezione1.R        # Lab Lezione 1 (centralità)
+│   ├── lab_sna_lezione2.R        # Lab Lezione 2 (community, bipartite)
+│   └── lab_sna_lezione3.R        # Lab Lezione 3 (coordinated sharing)
 ├── slides/
-│   ├── 00_presentazione.qmd   # Presentazione corso
-│   ├── 01_rappresentazioni.qmd
-│   ├── 02_centralita.qmd
-│   ├── 03_laboratorio.qmd
-│   └── 04_lezione2.qmd
+│   ├── 00_presentazione.qmd      # Presentazione corso
+│   ├── 01_rappresentazioni.qmd   # Grafi e proprietà
+│   ├── 02_centralita.qmd         # Metriche di centralità
+│   ├── 03_laboratorio.qmd        # Lab R/igraph
+│   ├── 04_lezione2.qmd           # Community e bipartite
+│   └── 05_coordinated_sharing.qmd # Coordinated sharing detection
 └── docs/
-    ├── index.html             # Sito web del corso
-    └── slides/                # Slide renderizzate (HTML)
+    ├── index.html                # Sito web del corso
+    └── slides/                   # Slide renderizzate (HTML)
 ```
 
 ---
