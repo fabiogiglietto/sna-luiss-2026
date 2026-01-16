@@ -56,11 +56,11 @@ Consultate i report **durante** l'analisi per confrontare i vostri risultati con
 
 ## Organizzazione del Lab {.smaller}
 
-### Lavoro in Gruppi (2-3 studenti)
+### Lavoro in Gruppi (4-5 studenti)
 
 :::: {.columns}
 ::: {.column width="50%"}
-**Gruppo A — TG24ore**
+**Gruppi dispari (1, 3, 5...) — TG24ore**
 
 - Dataset: `tg24ore_posts.csv`
 - ~29.600 post
@@ -68,13 +68,18 @@ Consultate i report **durante** l'analisi per confrontare i vostri risultati con
 :::
 
 ::: {.column width="50%"}
-**Gruppo B — Mag24**
+**Gruppi pari (2, 4, 6...) — Mag24**
 
 - Dataset: `mag24_posts.csv`
 - ~33.500 post
 - Report: `Mag24.es_investigation_2021.pdf`
 :::
 ::::
+
+::: {.callout-tip}
+## Suggerimento per i gruppi
+Dividetevi i ruoli: chi scrive codice, chi consulta il report, chi prende appunti, chi prepara la presentazione finale.
+:::
 
 ### Timeline
 
