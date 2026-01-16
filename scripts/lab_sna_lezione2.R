@@ -7,7 +7,7 @@
 # 1. SETUP --------------------------------------------------------------------
 library(igraph)
 library(ggraph)
-library(ggpubr)
+library(patchwork)
 library(tidyverse)
 
 # Carica i dati
@@ -85,9 +85,8 @@ plot_lou <- ggraph(rt_g, layout = "fr") +
   labs(color = "Community")
 
 # Confronto side by side
-ggarrange(plot_eb, plot_lou,
-          labels = c("Edge Betweenness", "Louvain"),
-          ncol = 2, nrow = 1)
+plot_eb + plot_lou +
+  plot_annotation(tag_levels = list(c("Edge Betweenness", "Louvain")))
 
 # 9. RETI BIPARTITE -----------------------------------------------------------
 # Verifica se la rete è bipartita
