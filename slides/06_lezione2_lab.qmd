@@ -47,7 +47,7 @@ Per contestualizzare l'analisi, avete accesso ai report delle investigazioni:
 | Report | Contenuto |
 |--------|-----------|
 | `TG24ore_investigation.pdf` | Investigazione rete TG24ore |
-| `Mag24.es_investigation_2021.pdf` | Investigazione rete Mag24 |
+| `Mag_Investigation_1.pdf`, `Mag_investigation_2.pdf` | Investigazione rete Mag24 |
 | `From_SNA_to_CIB_context.pdf` | Background metodologico (2018) |
 
 ::: {.callout-tip}
@@ -94,7 +94,7 @@ Consultate i report **durante** l'analisi per confrontare i vostri risultati con
 
 - Dataset: `mag24_posts.csv`
 - ~33.500 post
-- Report: `Mag24.es_investigation_2021.pdf`
+- Report: `Mag_Investigation_1.pdf`, `Mag_investigation_2.pdf`
 :::
 ::::
 
@@ -412,7 +412,8 @@ Dati MCL → prep_data() → detect_groups() → generate_network() → cluster_
 ### Report investigazioni
 
 - [TG24ore Investigation](../reports/TG24ore_investigation.pdf)
-- [Mag24 Investigation](../reports/Mag24.es_investigation_2021.pdf)
+- [Mag24 Investigation Part 1](../reports/Mag_Investigation_1.pdf)
+- [Mag24 Investigation Part 2](../reports/Mag_investigation_2.pdf)
 - [Background 2018](../reports/From_SNA_to_CIB_context.pdf)
 
 ### Strumenti
