@@ -9,7 +9,7 @@ format:
     preview-links: auto
     footer: "SNA — Blocco 3: Laboratorio"
     transition: slide
-    highlight-style: github
+    highlight-style: a11y-dark
     code-line-numbers: false
 ---
 

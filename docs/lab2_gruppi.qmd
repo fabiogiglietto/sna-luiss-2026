@@ -1,0 +1,132 @@
+---
+title: "Lab 2: Coordinated Network Analysis"
+subtitle: "Assegnazione Gruppi e Istruzioni"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    highlight-style: a11y-dark
+---
+
+## Obiettivo
+
+Applicare le tecniche di Social Network Analysis e CooRTweet per analizzare reti di pagine Facebook coordinate e condurre un'analisi OSINT.
+
+## Gruppi e Focus
+
+| Gruppo | Network | Focus Primario |
+|--------|---------|----------------|
+| **A** | tg24ore | Struttura network: community, centralità, evoluzione |
+| **B** | tg24ore | OSINT: chi gestisce le pagine? tracce digitali? |
+| **C** | mag24 | Struttura network: community, centralità, connessioni |
+| **D** | mag24 | OSINT: connessione Spagna-Italia, domini correlati |
+
+## Dati
+
+I dati sono estratti dalla **Meta Content Library** in formato CSV.
+
+```
+data/
+├── tg24ore_posts.csv    # Per gruppi A e B
+└── mag24_posts.csv      # Per gruppi C e D
+```
+
+### Struttura dati
+
+| Colonna | Descrizione |
+|---------|-------------|
+| `text` | Testo del post |
+| `surface.name` | Nome pagina/gruppo |
+| `mcl_url` | URL del post |
+| `creation_time` | Timestamp creazione |
+
+## Deliverables (90 minuti)
+
+Ogni gruppo deve produrre:
+
+1. **Network Graph** (screenshot o export da R/Gephi)
+2. **Top 5 nodi** per centralità (degree e/o betweenness)
+3. **Analisi community**: numero, dimensioni, caratteristiche
+4. **Findings OSINT**: Chi sono? Sono autentici?
+5. **3-4 slide** per presentazione (usare template)
+
+## Workflow Suggerito
+
+### Fase 1: Analisi Quantitativa (45 min)
+
+```r
+library(CooRTweet)
+library(data.table)
+
+# 1. Carica dati
+df <- fread("data/[VOSTRO_FILE].csv")
+
+# 2. Prepara
+data_prep <- prep_data(df,
+  object_id = "text",
+  account_id = "surface.name",
+  content_id = "mcl_url",
+  timestamp_share = "creation_time")
+
+# 3. Rileva coordinamento
+coord <- detect_groups(data_prep, min_participation = 2, time_window = 60)
+
+# 4. Genera network
+g <- generate_coordinated_network(coord, edge_weight = 0.5, subgraph = 1)
+
+# 5. Analizza
+V(g)$degree <- degree(g)
+V(g)$community <- membership(cluster_louvain(g))
+
+# 6. Top accounts
+top_accounts <- data.frame(
+  name = V(g)$name,
+  degree = V(g)$degree,
+  community = V(g)$community
+) |> dplyr::arrange(desc(degree)) |> head(10)
+```
+
+### Fase 2: Analisi OSINT (30 min)
+
+Per ogni pagina top:
+
+1. Cerca su Facebook (se ancora attiva)
+2. Controlla Page Transparency
+3. Cerca il dominio associato su:
+   - WHOIS lookup
+   - Wayback Machine
+   - DNSlytics (reverse analytics)
+
+### Fase 3: Preparazione Presentazione (15 min)
+
+Usare il template in `docs/presentation_template.qmd`
+
+## Domande Guida
+
+### Per l'analisi di rete:
+- Quante pagine sono coordinate?
+- Ci sono sotto-gruppi (community) distinte?
+- Quali pagine sono più centrali (hub)?
+- C'è correlazione tra tipo di pagina e posizione nella rete?
+
+### Per l'analisi OSINT:
+- Le pagine si presentano come politiche o altro?
+- Gli admin sono nello stesso paese?
+- I domini condivisi sono trasparenti?
+- Ci sono segnali di inautenticità? (richiede investigazione OSINT)
+
+## Timeline
+
+| Tempo | Attività |
+|-------|----------|
+| 17:00-17:10 | Setup, caricamento dati |
+| 17:10-17:45 | Analisi CooRTweet + network |
+| 17:45-18:00 | *Pausa/sync con altro sotto-gruppo* |
+| 18:00-18:15 | Analisi OSINT |
+| 18:15-18:30 | Preparazione slide |
+
+## Supporto
+
+- Script di riferimento: `scripts/coortweet_demo.R`
+- OSINT checklist: `docs/osint_checklist.qmd`
+- In caso di problemi: chiedere in chat principale

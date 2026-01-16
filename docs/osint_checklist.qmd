@@ -1,0 +1,139 @@
+---
+title: "OSINT Checklist"
+subtitle: "Analisi di Reti Coordinate"
+format:
+  html:
+    toc: true
+    highlight-style: a11y-dark
+---
+
+## 1. Analisi Pagina Facebook
+
+### Informazioni Base
+- [ ] Nome pagina e URL
+- [ ] Data creazione
+- [ ] Numero follower/subscriber
+- [ ] Categoria dichiarata
+- [ ] Descrizione/About
+
+### Page Transparency (se disponibile)
+- [ ] Località admin
+- [ ] Numero admin
+- [ ] Cambi di nome storici
+- [ ] Merge con altre pagine
+
+### Analisi Contenuti
+- [ ] Tipo contenuto prevalente (foto, link, video)
+- [ ] Frequenza posting
+- [ ] Temi principali
+- [ ] Lingua utilizzata
+- [ ] **Cambi improvvisi** di tipo contenuto
+
+### Red Flags Pagina
+- [ ] Mismatch categoria/contenuto (es. "Entertainment" -> politica)
+- [ ] Crescita follower anomala
+- [ ] Engagement ratio sospetto (molte condivisioni, pochi commenti)
+- [ ] Contenuto copia-incollato da altre fonti
+
+---
+
+## 2. Analisi Dominio Web
+
+### Informazioni Tecniche
+- [ ] WHOIS records (attuali)
+- [ ] WHOIS storici (via whoisxmlapi.com o simili)
+- [ ] Registrant name/organization
+- [ ] Data registrazione dominio
+- [ ] IP address
+- [ ] Hosting provider
+
+### Tracce Digitali
+- [ ] Google Analytics ID (UA-XXXXXXXX)
+- [ ] Google AdSense ID
+- [ ] Facebook Pixel ID
+- [ ] Altri tracking codes
+
+### Reverse Lookups
+- [ ] Altri domini con stesso Analytics ID (DNSlytics)
+- [ ] Altri domini sullo stesso IP
+- [ ] Altri domini stesso registrant
+
+### Contenuto Sito
+- [ ] Pagina "Chi siamo" / About
+- [ ] Informazioni contatto
+- [ ] Privacy policy
+- [ ] Imprint/Note legali
+- [ ] Rating NewsGuard (se disponibile)
+
+### Red Flags Dominio
+- [ ] Registrant anonimo/privacy protected
+- [ ] Nessuna informazione editoriale
+- [ ] Domini multipli stesso operatore
+- [ ] Domain hopping (cambio frequente dominio)
+
+---
+
+## 3. Analisi Network-Level
+
+### Pattern di Coordinamento
+- [ ] Pagine che condividono stesso contenuto entro minuti
+- [ ] Pattern di naming simili
+- [ ] Cross-posting sistematico
+- [ ] Domini/URL in comune
+- [ ] Admin nella stessa località
+
+### Segnali di Inautenticità
+- [ ] Ownership anonima
+- [ ] Mismatch tra presentazione e contenuto reale
+- [ ] Pivot improvvisi (meme -> politica)
+- [ ] Domain hopping nel tempo
+- [ ] Anomalie engagement
+
+---
+
+## 4. Tools di Riferimento
+
+| Tool | Scopo | URL |
+|------|-------|-----|
+| **WHOIS** | Registrazione dominio | whois.domaintools.com |
+| **Wayback Machine** | Snapshot storici | web.archive.org |
+| **DNSlytics** | Reverse DNS/Analytics | dnslytics.com |
+| **BuiltWith** | Technology lookup | builtwith.com |
+| **Facebook Ad Library** | Trasparenza ads | facebook.com/ads/library |
+| **CrowdTangle** | Analytics Facebook | crowdtangle.com |
+| **SpyOnWeb** | Reverse analytics | spyonweb.com |
+
+---
+
+## 5. Template Findings
+
+```
+### [Nome Pagina/Dominio]
+
+**Tipo**: Pagina Facebook / Sito web
+**URL**:
+**Creato**:
+**Followers/Traffic**:
+
+**Presentazione**: Come si descrive?
+**Contenuto reale**: Cosa posta effettivamente?
+
+**Admin/Ownership**:
+- Località:
+- Identità nota: Sì/No
+
+**Collegamenti**:
+- Altre pagine coordinate:
+- Domini associati:
+- Analytics condivisi:
+
+**Valutazione autenticità**:
+- [ ] Autentico
+- [ ] Sospetto
+- [ ] Inautentico
+
+**Evidenze**:
+1.
+2.
+3.
+```

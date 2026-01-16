@@ -1,0 +1,90 @@
+---
+title: "Analisi Network: [NOME NETWORK]"
+subtitle: "Gruppo [A/B/C/D] — Lab 2"
+author: "[Nomi componenti gruppo]"
+date: "2026-01-16"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    highlight-style: a11y-dark
+---
+
+## Network Overview
+
+::: {.columns}
+::: {.column width="50%"}
+| Metrica | Valore |
+|---------|--------|
+| **Nodi** | [n] |
+| **Archi** | [n] |
+| **Densità** | [x.xxx] |
+| **Componenti** | [n] |
+| **Modularità** | [x.xxx] |
+:::
+::: {.column width="50%"}
+![Network visualization](images/network.png)
+:::
+:::
+
+---
+
+## Top Account per Centralità
+
+| # | Account | Degree | Betweenness | Tipo |
+|---|---------|--------|-------------|------|
+| 1 | | | | |
+| 2 | | | | |
+| 3 | | | | |
+| 4 | | | | |
+| 5 | | | | |
+
+---
+
+## Community Structure
+
+::: {.columns}
+::: {.column width="50%"}
+**Comunità rilevate**: [n]
+
+| Community | Nodi | Caratteristica |
+|-----------|------|----------------|
+| 1 | | |
+| 2 | | |
+| 3 | | |
+:::
+::: {.column width="50%"}
+![Community visualization](images/communities.png)
+:::
+:::
+
+---
+
+## OSINT Findings
+
+### Chi sono questi attori?
+
+- **Pagina X**: [descrizione + evidenze]
+- **Pagina Y**: [descrizione + evidenze]
+
+### Sono autentici?
+
+::: {.callout-warning}
+## Segnali di inautenticità rilevati
+- [Segnale 1]
+- [Segnale 2]
+:::
+
+---
+
+## Conclusioni
+
+::: {.incremental}
+1. **Finding principale**:
+2. **Pattern interessante**:
+3. **Domande aperte**:
+:::
+
+### Limiti dell'analisi
+- [Limite 1]
+- [Limite 2]

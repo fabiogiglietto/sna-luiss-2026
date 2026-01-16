@@ -1,0 +1,334 @@
+---
+title: "Background: Coordinated Sharing Detection"
+subtitle: "Social Network Analysis — Lezione 2"
+author: "Prof. Fabio Giglietto"
+date: "2026-01-16"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Master OSINT, AI & Security Studies — LUISS 2025/26"
+    transition: fade
+    background-transition: fade
+    fig-align: center
+    highlight-style: a11y-dark
+---
+
+## Perché studiare le reti di news?
+
+:::: {.columns}
+::: {.column width="50%"}
+**Dal contenuto al comportamento**
+
+- Fact-checking: approccio reattivo
+- Analisi di rete: approccio proattivo
+- Focus: **chi** diffonde e **come**
+:::
+::: {.column width="50%"}
+![](../rawmat/images/sna_page5_img1.jpeg){height="350px"}
+
+::: {.caption}
+Adamic & Glance (2004) "Divided they blog"
+:::
+:::
+::::
+
+## Evoluzione degli approcci
+
+![](../rawmat/images/sna_page6_img1.jpeg){height="450px"}
+
+Benkler et al. (2018): Partisanship, Propaganda, and Disinformation
+
+## Mapping Italian News (2018-2019)
+
+:::: {.columns}
+::: {.column width="50%"}
+**84,815** news stories italiane con engagement Facebook
+
+**217,765** retweets di partiti e politici italiani
+
+Analizzati nei 6 mesi prima delle elezioni 2018
+:::
+::: {.column width="50%"}
+![](../rawmat/images/sna_page7_img1.jpeg){height="400px"}
+:::
+::::
+
+## MP-MPAS: Multi-Party Media Partisanship Attention Scores
+
+::: {.incremental}
+1. **Fase 1**: Stima partisanship utenti basata sui retweet ai partiti
+2. **Fase 2**: Stima attenzione partigiana verso le fonti media condivise
+:::
+
+Comunità partigiane diverse tendono a fare riferimento a fonti media diverse con intensità diverse.
+
+## Insularity Score
+
+:::: {.columns}
+::: {.column width="60%"}
+**Definizione**: Grado in cui una fonte è condivisa prevalentemente da una singola comunità partigiana
+
+- Range: 0 (cross-partisan) → 1 (highly insular)
+- Fonti populiste = più insulari
+- Più shares che commenti = segnale di amplificazione
+:::
+::: {.column width="40%"}
+![](../rawmat/images/sna_page13_img1.jpeg){height="350px"}
+:::
+::::
+
+## Coordinated Sharing Detection
+
+::: {.callout-note}
+## Coordinated Inauthentic Behavior (CIB) — Termine Facebook
+"Coordinated efforts to manipulate public debate using fake accounts"
+:::
+
+**Coordinated Sharing Detection** rileva account che condividono **ripetutamente** gli stessi contenuti in un **breve intervallo di tempo**.
+
+**CLSB** (Coordinated Link Sharing Behaviour) è un **sottoinsieme** focalizzato sulla condivisione degli stessi URL.
+
+::: {.callout-warning}
+## Importante
+La detection rileva **coordinamento**, non **autenticità**. L'autenticità richiede investigazione OSINT manuale.
+:::
+
+## Il Framework A-B-C
+
+:::: {.columns}
+::: {.column width="50%"}
+Il framework A-B-C (François, 2019) è un approccio integrato per rilevare la disinformazione che evidenzia l'interazione tra:
+
+- **A**ctors (manipolativi)
+- **B**ehaviour (ingannevole)
+- **C**ontent (dannoso)
+:::
+::: {.column width="50%"}
+![](../rawmat/images/sna_page39_img1.jpeg){height="350px"}
+:::
+::::
+
+## CooRTweet e il Framework A-B-C
+
+| Step | Elemento | Implementazione |
+|------|----------|-----------------|
+| 1 | **Content** | Set di contenuti (URLs, testi, hashtag...) |
+| 2 | **Behaviour** | Coordinated Sharing Detection con CooRTweet |
+| 3 | **Actors** | Network di account coordinati |
+| 4 | **Content** | Contenuti condivisi da questi attori |
+
+→ Il ciclo può essere iterato per espandere la detection
+
+## Tre livelli di analisi
+
+:::: {.columns}
+::: {.column width="33%"}
+### Macro
+**Ecosistema**
+
+Mappatura di tutte le reti coordinate in un contesto (es. elezioni)
+:::
+::: {.column width="33%"}
+### Meso
+**Network**
+
+Analisi approfondita di una singola rete coordinata
+:::
+::: {.column width="33%"}
+### Micro
+**Contenuto**
+
+Singole news stories e percorsi individuali
+:::
+::::
+
+## Esempio: COVID-19 disinfo in Italia
+
+::: {.incremental}
+1. **Content**: 212 storie false/misleading da fact-checkers → 1,258 URLs
+2. **Behaviour**: CLSB detection su 13,271 shares Facebook
+3. **Actors**: 152 account coordinati identificati
+4. **Content**: 54,346 URLs condivisi da questi attori
+:::
+
+→ Iterazione successiva: 344 account in 33 componenti
+
+## Reti Coordinate Rilevate
+
+:::: {.columns}
+::: {.column width="50%"}
+**Elezioni 2018**
+
+- N=10 reti organizzate
+- N=28 pagine/gruppi
+
+**Elezioni Europee 2019**
+
+- N=50 reti organizzate
+- N=143 pagine/gruppi
+:::
+::: {.column width="50%"}
+![](../rawmat/images/sna_page29_img1.jpeg){height="350px"}
+:::
+::::
+
+## Tipologie di Reti
+
+:::: {.columns}
+::: {.column width="33%"}
+### Politiche
+Pagine apertamente politiche che coordinano la condivisione
+:::
+::: {.column width="33%"}
+### Miste
+Pagine con contenuto misto (politico + altro)
+:::
+::: {.column width="33%"}
+### Non-Politiche
+Pagine apparentemente non-politiche che condividono news politiche
+:::
+::::
+
+::: {.callout-warning}
+## Il pericolo dell'inautenticità
+Le reti "non-politiche" possono raggiungere audience ignare
+:::
+
+## Inautenticità: Un Esempio
+
+La pagina "Professione Mantenuto" (>185k likes):
+
+- Si presenta come pagina di **intrattenimento**
+- Posta principalmente foto e meme
+- **Ma**: occasionalmente condivide news politiche e teorie cospirazioniste
+
+→ L'audience non si aspetta contenuto politico
+
+## Case Study: Network tg24ore {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+| Caratteristica | Valore |
+|----------------|--------|
+| **Pagine** | 10 Facebook pages |
+| **Reach** | ~2 milioni utenti |
+| **Attiva dal** | 2017 |
+| **Rilevata** | Elezioni 2018, 2019 |
+| **NewsGuard** | Fallisce tutti gli standard |
+:::
+::: {.column width="50%"}
+![](../rawmat/images/tg24_page1_img1.jpeg){height="300px"}
+:::
+::::
+
+## tg24ore: Domain Hopping
+
+```
+2017: notiziarioonline360.com
+2017-2018: webitalia360.com, usoilsarcasmo.com
+2018: tg-news24.com, degrado.net
+2019: curiosity-online.com, tg24-ore.com
+2020: howtodofor.com, notiziariodelweb.com
+```
+
+**Attribution**: Operatori di Taurianova (Calabria)
+
+**Motivazione dichiarata**: economica (advertising revenue)
+
+## tg24ore: Le pagine principali
+
+:::: {.columns}
+::: {.column width="50%"}
+**Esplicitamente politiche:**
+
+- L'Italia si ribella (130k)
+- Italiani uniti per la patria
+
+**Apparentemente non-politiche:**
+
+- Link CATTIVI
+- MALA VITA
+- Aforismi e Link
+:::
+::: {.column width="50%"}
+**Pattern chiave**: Le pagine passano improvvisamente da **foto/meme** a **link politici** nei mesi precedenti le elezioni
+:::
+::::
+
+## Case Study: Network mag24 {.smaller}
+
+:::: {.columns}
+::: {.column width="55%"}
+| Pagina | Followers | Admin |
+|--------|-----------|-------|
+| Grande Cocomero Classic | 309,641 | ES+IT |
+| Liberi e Indipendenti | 121,202 | ES+IT |
+| Sergio Mattarella Non è il Mio Presidente | 33,434 | ES+IT |
+| Italia Sovrana e fuori dall'Europa | 28,472 | ES+IT |
+| Capra News | 25,984 | ES+IT |
+| Presidente Trump Fan Club Italia | 11,464 | ES+IT |
+:::
+::: {.column width="45%"}
+**Peculiarità**:
+
+- Admin prevalentemente in **Spagna**
+- Target audience: **Italia**
+- Contenuto: politico nazionalista
+:::
+::::
+
+## mag24: Analisi OSINT
+
+::: {.callout-tip}
+## Pivot tecnici identificati
+- **IP**: 62.149.128.151 (Aruba, Italia)
+- **Google Analytics ID**: UA-51183173
+- Domini correlati: capra.news, robedamaschi.it
+:::
+
+**Connessione Spagna-Italia**: Admin in Spagna gestiscono pagine per audience italiana con contenuto nazionalista anti-EU
+
+## Strumenti per la Detection
+
+| Tool | Targeted Behaviour | Platform | Note |
+|------|-------------------|----------|------|
+| **CooRnet** | Link sharing (CLSB) | Facebook/Instagram | *Discontinued* (basato su CrowdTangle) |
+| **Coordination Network Toolkit** | Retweet, tweet, link | X (Twitter) | |
+| **CooRTweet** | Qualsiasi contenuto | Platform agnostic | Successore di CooRnet |
+
+## CooRTweet: Definizione Formale
+
+1. Una **sharing action** = account *a* posta contenuto *p* al tempo *t*
+
+$$a = (p, t)$$
+
+2. Due account sono **coordinati** quando eseguono la "stessa azione" almeno *r* volte, entro un intervallo τ
+
+3. "Stessa azione" = stesso URL, stesso hashtag, stesso testo, stesso retweet...
+
+## La vostra missione
+
+::: {.callout-important}
+## Lab 2 Challenge
+
+Applicare le tecniche apprese per analizzare le reti tg24ore e mag24:
+
+1. **Chi sono** questi attori? (OSINT investigation)
+2. **Come operano** (pattern di coordinamento)? (CooRTweet)
+3. **Ci sono segnali di inautenticità**? (OSINT investigation)
+:::
+
+**Gruppi A+B**: tg24ore | **Gruppi C+D**: mag24
+
+## Riferimenti
+
+- Giglietto, F., Righetti, N., Rossi, L., & Marino, G. (2020). It takes a village to manipulate the media. *Information, Communication & Society*
+- François, C. (2019). Actors, Behaviors, Content: A Disinformation ABC
+- Righetti, N., & Balluff, P. (2023). CooRTweet: Coordinated Networks Detection on Social Media
+
+## Domande? {.center}
+
+**Prof. Fabio Giglietto**
+fabio.giglietto@uniurb.it

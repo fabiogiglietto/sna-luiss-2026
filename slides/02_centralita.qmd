@@ -9,7 +9,7 @@ format:
     preview-links: auto
     footer: "SNA — Blocco 2: Centralità"
     transition: slide
-    highlight-style: github
+    highlight-style: a11y-dark
 ---
 
 ## Cos'è la Centralità?

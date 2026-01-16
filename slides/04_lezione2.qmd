@@ -9,7 +9,7 @@ format:
     preview-links: auto
     footer: "SNA — Lezione 2"
     transition: slide
-    highlight-style: github
+    highlight-style: a11y-dark
 ---
 
 ## Agenda

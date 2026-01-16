@@ -11,7 +11,7 @@ format:
     logo: ""
     footer: "SNA — Master OSINT, AI e Security Studies"
     transition: slide
-    highlight-style: github
+    highlight-style: a11y-dark
 ---
 
 ## Perché Social Network Analysis? {.smaller}
