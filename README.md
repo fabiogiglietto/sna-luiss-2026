@@ -26,11 +26,11 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 ### Lezione 1 — In presenza (5 ore)
 *9 Gennaio 2026, 14:00-19:00*
 
-| Blocco | Durata | Contenuto |
-|--------|--------|-----------|
-| 1 | 75 min | Rappresentazioni dei grafi, proprietà di base |
-| 2 | 75 min | Centralità: degree, betweenness, closeness, eigenvector |
-| 3 | 90 min | Laboratorio R/igraph + Gephi |
+| Blocco | Contenuto | Slide |
+|--------|-----------|-------|
+| 1 | **Rappresentazioni dei Grafi** — Nodi, archi, proprietà di base | 01 |
+| 2 | **Centralità** — Degree, betweenness, closeness, eigenvector | 02 |
+| 3 | **Laboratorio** — R/igraph + Gephi | 03 |
 
 ### Lezione 2 — Online (5 ore)
 *16 Gennaio 2026, 14:00-19:00*
@@ -40,7 +40,7 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 | 1 | **Reti da Social Media Data** — Rete retweet, rete utente-hashtag | 04 |
 | 2 | **Community Detection** — Edge Betweenness, Louvain, modularità, NMI | 04 |
 | 3 | **Reti Bipartite** — Due tipi di nodi, proiezioni | 04 |
-| 4 | **Coordinated Sharing Detection** — [CooRTweet](https://github.com/nicolarighetti/CooRTweet) + [CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost) | 05 |
+| 4 | **Coordinated Sharing Detection** — CooRTweet + CooRTweetPost | 05 |
 | 5 | **Lab: Reti Coordinate Italiane** — Analisi TG24ore e Mag24 (lavoro in gruppi) | 06 |
 
 ---
