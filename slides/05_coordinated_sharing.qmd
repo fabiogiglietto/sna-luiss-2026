@@ -1,0 +1,280 @@
+---
+title: "Coordinated Sharing Detection"
+subtitle: "Lezione 2 — Online (Parte 2)"
+author: "Prof. Fabio Giglietto"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    preview-links: auto
+    footer: "SNA — Coordinated Sharing"
+    transition: slide
+    highlight-style: github
+---
+
+## Coordinated Sharing Detection
+
+Il **coordinated sharing** è un comportamento in cui più account condividono gli stessi contenuti in modo sincronizzato.
+
+::: {.callout-important}
+## Perché è importante per OSINT
+Identificare comportamenti coordinati può rivelare:
+
+- Campagne di disinformazione
+- Astroturfing e manipolazione
+- Reti di bot o account inautentici
+:::
+
+## coortweet: Il Pacchetto R
+
+[coortweet](https://github.com/nicolarighetti/coortweet) è un motore di detection **content e platform agnostic** per comportamenti coordinati.
+
+```r
+# Installazione
+devtools::install_github("nicolarighetti/coortweet")
+
+library(coortweet)
+```
+
+### Principio di funzionamento
+
+1. Identifica contenuti condivisi da più account
+2. Calcola finestre temporali di condivisione
+3. Crea rete di co-sharing tra account
+4. Rileva cluster di account coordinati
+
+## Il Cuore di coortweet: Rete Bipartita
+
+coortweet costruisce internamente una **rete bipartita**:
+
+:::: {.columns}
+::: {.column width="50%"}
+### Due tipi di nodi
+
+- **Account** (chi condivide)
+- **Contenuti** (cosa viene condiviso)
+
+### Archi
+
+Account → Contenuto se l'account ha condiviso quel contenuto entro la time window
+:::
+
+::: {.column width="50%"}
+```
+Account ←→ Contenuto
+
+ User1 ─── URL_A
+   │         │
+   └─── URL_B ───┐
+                 │
+ User2 ─── URL_A │
+   │             │
+   └─────────────┘
+ User3 ─── URL_B
+```
+:::
+::::
+
+## Da Bipartita a Co-sharing: La Proiezione
+
+coortweet usa la **proiezione** per creare la rete di coordinamento:
+
+::: {.callout-note}
+## Ricordate le proiezioni?
+Dalla rete bipartita Account-Contenuto, la **proiezione sugli account** connette due utenti se hanno condiviso lo stesso contenuto.
+:::
+
+```r
+# Internamente, coortweet fa qualcosa di simile a:
+proj <- bipartite.projection(g_bipartite)
+g_accounts <- proj$proj1  # Rete account-account
+```
+
+Il **peso** dell'arco = numero di contenuti condivisi in comune
+
+## Filtraggio Statistico
+
+Non tutte le co-condivisioni sono sospette. coortweet filtra:
+
+```r
+result <- detect_coordinated_sharing(
+  data = posts_df,
+  time_window = 60,        # finestra temporale (secondi)
+  min_repetition = 2,      # minimo contenuti in comune
+  percentile_edge = 0.95   # mantieni solo top 5% archi
+)
+```
+
+::: {.callout-tip}
+## Perché il percentile?
+Due account che condividono 1 link in comune sono normali.
+Due account che condividono 50 link in 60 secondi sono **statisticamente anomali**.
+:::
+
+## Community Detection per Identificare Gruppi
+
+Sulla rete di co-sharing filtrata, coortweet applica **community detection**:
+
+```r
+# Internamente usa Louvain (o altri algoritmi)
+communities <- cluster_louvain(g_cosharing)
+
+# Ogni comunità = potenziale gruppo coordinato
+V(g_cosharing)$cluster <- membership(communities)
+```
+
+::: {.callout-important}
+## Il risultato finale
+Ogni **cluster** identifica un gruppo di account che:
+
+1. Hanno condiviso gli stessi contenuti
+2. Entro la stessa finestra temporale
+3. Con frequenza statisticamente anomala
+:::
+
+## Pipeline Completa di coortweet
+
+```{mermaid}
+flowchart LR
+    A[Posts Data] --> B[Rete Bipartita<br/>Account-Contenuto]
+    B --> C[Proiezione<br/>su Account]
+    C --> D[Filtraggio<br/>Statistico]
+    D --> E[Community<br/>Detection]
+    E --> F[Cluster<br/>Coordinati]
+```
+
+| Step | Concetto SNA | Funzione coortweet |
+|------|--------------|-------------------|
+| 1 | Rete bipartita | Costruzione interna |
+| 2 | Proiezione | `bipartite.projection()` |
+| 3 | Peso archi | Conteggio co-sharing |
+| 4 | Community | `cluster_louvain()` |
+
+## coortweet: Esempio Pratico {.smaller}
+
+```r
+library(coortweet)
+
+# Carica dati social media (qualsiasi piattaforma)
+result <- detect_coordinated_sharing(
+  data = posts_df,
+  time_window = 60,        # secondi
+  min_repetition = 2,      # condivisioni minime
+  percentile_edge = 0.95   # soglia per archi
+)
+
+# Risultati
+result$network        # rete igraph (proiezione filtrata)
+result$coordinated    # account coordinati
+result$highly_coord   # cluster principali (da community detection)
+```
+
+## coortweet: Visualizzazione
+
+```r
+library(ggraph)
+
+# Visualizza la rete di coordinamento
+g <- result$network
+
+ggraph(g, layout = "fr") +
+  geom_edge_link(aes(alpha = weight)) +
+  geom_node_point(aes(color = as.factor(cluster)), size = 3) +
+  theme_graph() +
+  labs(color = "Cluster", alpha = "Co-shares")
+```
+
+::: {.callout-tip}
+## Interpretazione
+- **Colore** = cluster (community detection)
+- **Spessore/alpha archi** = peso (contenuti in comune)
+- Account nello stesso cluster = potenziale coordinamento
+:::
+
+## CooRTweetPost: Post-processing
+
+[CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost) estende l'analisi di coortweet con funzionalità avanzate.
+
+```r
+# Installazione
+devtools::install_github("massimo-terenzi/CooRTweetPost")
+
+library(CooRTweetPost)
+```
+
+### Funzionalità principali
+
+- Analisi temporale dei cluster
+- Estrazione contenuti condivisi per cluster
+- Metriche avanzate di coordinamento
+- Report e visualizzazioni automatiche
+
+## CooRTweetPost: Esempio {.smaller}
+
+```r
+library(CooRTweetPost)
+
+# Dopo aver eseguito coortweet
+result <- detect_coordinated_sharing(data = posts_df, ...)
+
+# Post-processing con CooRTweetPost
+post_result <- process_coortweet_output(
+  coortweet_result = result,
+  original_data = posts_df
+)
+
+# Analisi per cluster
+post_result$cluster_summary     # Statistiche per cluster
+post_result$shared_content      # Contenuti condivisi
+post_result$temporal_analysis   # Pattern temporali
+```
+
+## Dall'Analisi all'Interpretazione
+
+::: {.callout-warning}
+## Attenzione!
+Coordinamento ≠ Manipolazione automatica
+
+Possibili spiegazioni legittime:
+- Utenti che seguono stesse fonti
+- Eventi di cronaca (tutti condividono la notizia)
+- Comunità tematiche organiche
+:::
+
+### Serve sempre ispezione manuale
+
+- Chi sono gli account nel cluster?
+- Quali contenuti hanno condiviso?
+- C'è un pattern temporale sospetto?
+
+## Riepilogo: Concetti SNA in coortweet {.smaller}
+
+| Concetto | Uso in coortweet |
+|----------|------------------|
+| **Rete bipartita** | Account ↔ Contenuti condivisi |
+| **Proiezione** | Da bipartita a rete account-account |
+| **Peso archi** | Numero di contenuti co-condivisi |
+| **Community detection** | Identificazione cluster coordinati |
+| **Modularità** | Qualità della partizione in gruppi |
+
+::: {.callout-note}
+## Tutto si collega!
+I concetti di reti bipartite, proiezioni e community detection non sono astratti: sono gli strumenti che permettono di rilevare comportamenti coordinati.
+:::
+
+## Risorse {.center}
+
+### Paper di riferimento
+
+- Giglietto, Righetti, Rossi, Marino (2020) - [It takes a village to manipulate the media](https://doi.org/10.1177/0894439320921898)
+
+### Strumenti
+
+- [coortweet](https://github.com/nicolarighetti/coortweet) - Detection engine
+- [CooRTweetPost](https://github.com/massimo-terenzi/CooRTweetPost) - Post-processing
+- [CooRnet](https://github.com/fabiogiglietto/CooRnet) - Versione originale
+
+## Domande? {.center}
+
+**Prof. Fabio Giglietto**
+fabio.giglietto@uniurb.it
