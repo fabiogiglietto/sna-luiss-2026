@@ -35,10 +35,12 @@ Questo modulo introduce la Social Network Analysis (SNA) come strumento per l'in
 ### Lezione 2 — Online (5 ore)
 *16 Gennaio 2026, 14:00-19:00*
 
-- Monitoraggio reti sociali
-- API per la raccolta dati
-- Visualizzazione grafica delle reti informative
-- Coordinated sharing detection con [coortweet](https://github.com/nicolarighetti/coortweet)
+| Blocco | Contenuto |
+|--------|-----------|
+| 1 | **Reti da Social Media Data** — Rete retweet, rete utente-hashtag |
+| 2 | **Community Detection** — Edge Betweenness, Louvain, modularità, NMI |
+| 3 | **Reti Bipartite** — Due tipi di nodi, proiezioni |
+| 4 | **Coordinated Sharing Detection** — [coortweet](https://github.com/nicolarighetti/coortweet) |
 
 ---
 
